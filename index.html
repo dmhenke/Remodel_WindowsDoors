@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Window & Door Bids</title>
-<meta name="description" content="Side-by-side comparison of window and door bids for the Skyline and Sherwood remodels, opening by opening.">
+<meta name="description" content="Side-by-side comparison of window, door and heat pump bids for the Skyline and Sherwood remodels.">
 <style>
 :root{
   color-scheme: light;
@@ -13,6 +13,7 @@
   --v-andersen:#2a78d6; --v-toma:#eb6834; --v-daji:#1baf7a; --v-nf:#eda100; --v-topbright:#e87ba4;
   --good:#0ca30c; --critical:#d03b3b; --warning:#fab219;
   --img-bg:#ffffff; --accent:#2a78d6;
+  --h-viga:#2a78d6; --h-cooper:#eb6834; --h-tcl:#1baf7a; --h-echo:#eda100; --h-lucas:#e87ba4; --h-dc:#7d5bd0;
   --radius:10px;
 }
 @media (prefers-color-scheme: dark){
@@ -22,6 +23,7 @@
     --text:#f0efec; --text-2:#c3c2b7; --text-3:#94928a;
     --v-andersen:#3987e5; --v-toma:#d95926; --v-daji:#199e70; --v-nf:#c98500; --v-topbright:#d55181;
     --img-bg:#f4f4f2; --accent:#3987e5;
+    --h-viga:#3987e5; --h-cooper:#d95926; --h-tcl:#199e70; --h-echo:#c98500; --h-lucas:#d55181; --h-dc:#9277e0;
   }
 }
 :root[data-theme="dark"]{
@@ -30,6 +32,7 @@
   --text:#f0efec; --text-2:#c3c2b7; --text-3:#94928a;
   --v-andersen:#3987e5; --v-toma:#d95926; --v-daji:#199e70; --v-nf:#c98500; --v-topbright:#d55181;
   --img-bg:#f4f4f2; --accent:#3987e5;
+  --h-viga:#3987e5; --h-cooper:#d95926; --h-tcl:#199e70; --h-echo:#c98500; --h-lucas:#d55181; --h-dc:#9277e0;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -115,10 +118,43 @@ dialog button{font:inherit;border:1px solid var(--line-strong);background:var(--
 .notes ul{margin:8px 0 0;padding-left:20px;color:var(--text-2);font-size:14px}
 .notes li{margin:4px 0}
 footer{color:var(--text-3);font-size:13px;padding:24px 0 48px}
+/* app tabs */
+.apptabs{display:flex;gap:2px;padding-top:14px;border-bottom:1px solid var(--line);overflow-x:auto}
+.apptabs a{padding:10px 14px;font-size:15px;color:var(--text-2);text-decoration:none;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.apptabs a:hover{color:var(--text)}
+.apptabs a[aria-current="page"]{color:var(--text);border-bottom-color:var(--text);font-weight:600}
+.apptabs a:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:6px}
+[hidden]{display:none !important}
+/* hvac view */
+#hsumchart{width:100%;display:block}
+#hsumchart text{font:12px/1 inherit;fill:var(--text-2)}
+#hsumchart .vname{fill:var(--text);font-weight:600;font-size:13px}
+#hsumchart .grid{stroke:var(--line);stroke-width:1}
+#hsumchart .axis{fill:var(--text-3);font-size:11px}
+.htiles{display:grid;grid-template-columns:repeat(var(--n,6),minmax(0,1fr));gap:0}
+.htiles .tile{border-right:1px solid var(--line)}
+.htiles .tile:last-child{border-right:0}
+.subs{margin:0 -20px;border-top:1px solid var(--line)}
+.subs .tile .imgbtn{aspect-ratio:3/4}
+.subs .tile .imgbtn img{object-position:top}
+.noimg{aspect-ratio:3/4;border:1px dashed var(--line-strong);border-radius:8px;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;font-size:12px;color:var(--text-3)}
+.hgroup{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);margin:28px 0 -4px;font-weight:600}
+.card-head.hreq{grid-template-columns:1fr}
+.pill.pfail{border-color:var(--critical);color:var(--critical)}
+.hval{font-size:13.5px;color:var(--text);line-height:1.4;flex:1}
+.htiles .tile.hst-fail{box-shadow:inset 0 3px 0 var(--critical)}
+.htiles .tile.hst-warn{box-shadow:inset 0 3px 0 var(--warning)}
+.htiles .tile.hst-ok{box-shadow:inset 0 3px 0 var(--good)}
+.htiles .tile.hst-na .hval,.htiles .tile.hst-na .vrow{color:var(--text-3)}
+.htiles .tile.hst-open .hval{color:var(--text-2)}
+.hs{display:inline-block;font-size:12px;border-radius:999px;padding:0 8px;margin:0 2px;border:1px solid var(--line-strong)}
+.hs.ok{border-color:var(--good)} .hs.warn{border-color:var(--warning)} .hs.fail{border-color:var(--critical)} .hs.open{border-style:dashed} .hs.na{color:var(--text-3)}
 @media (max-width:980px){
   .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
   .tile{border-bottom:1px solid var(--line)}
   .tile:nth-child(2n){border-right:0}
+  .htiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .htiles .tile:nth-child(2n){border-right:0}
 }
 @media (max-width:560px){
   h1{font-size:23px}
@@ -128,11 +164,19 @@ footer{color:var(--text-3);font-size:13px;padding:24px 0 48px}
   .tile{border-right:0;display:grid;grid-template-columns:120px 1fr;column-gap:12px}
   .tile .imgbtn{grid-row:span 6}
   .count{margin-left:0;width:100%}
+  .htiles{grid-template-columns:1fr}
+  .htiles .tile{display:flex;border-right:0}
+  .subs{margin:0 -20px}
 }
 </style>
 </head>
 <body>
 <div class="wrap">
+  <nav class="apptabs" aria-label="Bid categories">
+    <a href="#windows" data-t="wd">Windows &amp; doors</a>
+    <a href="#hvac" data-t="hvac">HVAC / heat pumps</a>
+  </nav>
+<div id="view-wd">
   <header class="top">
     <h1>Window &amp; door bid comparison</h1>
     <p class="sub">Every quoted opening for the Skyline and Sherwood remodels, side by side: what was ordered, what each bidder actually quoted (with their own drawings), the price, and whether it matches.</p>
@@ -178,6 +222,55 @@ footer{color:var(--text-3);font-size:13px;padding:24px 0 48px}
 
   <footer id="foot"></footer>
 </div>
+<div id="view-hvac" hidden>
+  <header class="top">
+    <h1>Heat pump bid comparison</h1>
+    <p class="sub">Every HVAC submission for Skyline, checked requirement by requirement against the ductless heat pump spec: two outdoor units, ceiling cassettes and floor units only, no wall-mounted units.</p>
+    <div class="meta" id="hmeta"></div>
+  </header>
+
+  <section class="panel" aria-labelledby="hsumh">
+    <h2 id="hsumh">Price and standing by bidder</h2>
+    <p class="lede" id="hsumlede"></p>
+    <div id="hsumwrap"></div>
+    <div class="legend">
+      <span><i class="lg-dot"></i>Quoted total (as written on the quote)</span>
+      <span><i class="lg-range"></i>With optional items (equipment tier, buyback)</span>
+    </div>
+    <div class="tablewrap"><table id="hsumtable"></table></div>
+  </section>
+
+  <section class="panel" aria-labelledby="hdoch" style="padding-bottom:0">
+    <h2 id="hdoch">What each bidder sent</h2>
+    <p class="lede">The bidder's own spec sheet or quote. Click to enlarge. Customer name and address are cropped from the local quotes.</p>
+    <div class="htiles subs" id="hsubs"></div>
+  </section>
+
+  <div class="controls" role="toolbar" aria-label="HVAC filters">
+    <div class="seg" id="hseg" role="group" aria-label="Bidders">
+      <button type="button" data-s="all" aria-pressed="true">All bidders</button>
+      <button type="button" data-s="scope" aria-pressed="false">Cassette &amp; floor offers only</button>
+    </div>
+    <label class="chk"><input type="checkbox" id="honlybad"> Only requirements a bid fails</label>
+    <span class="count" id="hcount"></span>
+  </div>
+
+  <section id="hcards" aria-label="Requirements"></section>
+
+  <section class="panel notes" aria-labelledby="hnoteh">
+    <h2 id="hnoteh">How to read this</h2>
+    <ul>
+      <li><b>Requirements</b> come from the ductless heat pump requirements document (two-outdoor-unit path, §7) and the owner rule of 11/01/2026: cassettes and floor units only.</li>
+      <li><b>Status:</b> <span class="hs ok">meets</span> <span class="hs warn">meets with a caveat</span> <span class="hs fail">fails</span> <span class="hs open">not documented, so ask</span> <span class="hs na">not applicable</span>. “Not documented” is not a pass; it is an open item on the request for information.</li>
+      <li><b>Capacities</b> are nameplate values from each bidder's sheet; “derated” applies the ~4% altitude loss at 4,900 ft. Low-temperature figures from overseas spec sheets are manufacturer claims until backed by an AHRI or NEEP listing.</li>
+      <li><b>Same hardware, three labels:</b> the Bestcold, ZERO and TCL outdoor units share cabinet size, charge, line-set limits and capacity tables. Compare them on indoor-unit offering, documentation, warranty and price.</li>
+      <li><b>Prices:</b> only the two local contractors have quoted, and neither quoted a ductless heat pump. Overseas prices will need duty, freight, sales tax and a separate installer added before they can be compared.</li>
+    </ul>
+  </section>
+
+  <footer id="hfoot"></footer>
+</div>
+</div>
 
 <div id="tip" role="tooltip"></div>
 <dialog id="dlg" aria-label="Enlarged drawing">
@@ -207,6 +300,7 @@ function showTip(html, x, y){ tip.innerHTML = html; tip.style.opacity = 1;
   if (L + r.width > innerWidth - 8) L = x - r.width - 14; if (T + r.height > innerHeight - 8) T = y - r.height - 14;
   tip.style.left = L + "px"; tip.style.top = T + "px"; }
 function hideTip(){ tip.style.opacity = 0; }
+window.__showTip = showTip; window.__hideTip = hideTip;
 
 /* ---------- summary ---------- */
 function sumRows(){
@@ -353,6 +447,202 @@ document.getElementById('dlgclose').addEventListener('click', () => dlg.close())
 dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
 let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(drawSummary, 120); });
 drawSummary(); drawCards();
+})();
+</script>
+<script id="hvacdata" type="application/json">{"updated":"2026-11-03",
+"vendors":[
+{"key":"viga","name":"Bestcold","short":"Bestcold · Viga","contact":"Viga Zheng","kind":"Overseas supplier (Alibaba)","scope":true,
+ "offer":"Main: MYTM45NA23BCH18-O (45K, 5-port) + MYTF18 floor/ceiling + MYTC12 + MYTC09 cassettes. Lower: MYTM37NA23BCH18-O (36K, 4-port) + 4× MYTC09 cassettes.",
+ "verdict":"Lead candidate. Only bid with a full cassette + floor package, a combination chart and AHRI certificates. Request for information open.",
+ "price":null,"imgs":[{"src":"img/hvac/viga_r454b_spec.webp","cap":"Bestcold R-454B free-match outdoor spec sheet (vendor brochure, p. 5)"}]},
+{"key":"cooper","name":"ZERO","contact":"Cooper Tse","kind":"Overseas supplier (Alibaba)","scope":true,
+ "offer":"Main: Z4SOV-36HDTB-US + 2× ZEV-18 floor/ceiling + ZCV-12 + ZCV-09 cassettes. Lower: Z4SOV-36HDTB-US + 4× ZCV-09 cassettes.",
+ "verdict":"In scope but too thin to grade: 2-page brochure with copy errors, no dimensions, no low-temperature capacity, no certificate numbers.",
+ "price":null,"imgs":[{"src":"img/hvac/cooper_brochure.webp","cap":"ZERO R-454B multi-split brochure, p. 2 (ODU, wall, duct, cassette and floor/ceiling tables)"}]},
+{"key":"tcl","name":"TCL / Universal","contact":"Steven Jin","kind":"Overseas supplier (Alibaba)","scope":false,
+ "offer":"H42FMH20XPC (42K) + H36FMH21XPC (36K) outdoor units with 9–24K wall-mounted indoor units.",
+ "verdict":"Strongest outdoor-unit ratings, but wall-mounted indoor units only. Needs a re-quote with cassettes and floor units.",
+ "price":null,"imgs":[{"src":"img/hvac/tcl_odu_spec.webp","cap":"TCL multi-zone universal outdoor spec sheet (AHRI 215387263–270)"},{"src":"img/hvac/tcl_idu_wall_spec.webp","cap":"TCL indoor-unit sheet: wall-mounted units only"}]},
+{"key":"echo","name":"Bestcold","short":"Bestcold · Echo","contact":"Echo Chen","kind":"Overseas supplier (Alibaba)","scope":false,
+ "offer":"Bestcold free-match outdoor units (T1220) with wall-mounted indoor units.",
+ "verdict":"Wall units only; same brand as Viga's bid, and the sheet has internal errors (fuse below circuit ampacity). Use as a price check only.",
+ "price":null,"imgs":[]},
+{"key":"lucas","name":"Lucas Heating & Air","contact":"Estimate #114378 · 10/29/2026 · valid to 11/28/2026","kind":"Local contractor, SLC","scope":false,
+ "offer":"Good/Better/Best: Trane 90–96% 100,000 Btu/h gas furnace + 3.5-ton Goodman/Trane A/C (13.4–16 SEER2), ducted. Plus 17 duct runs at $280.",
+ "verdict":"Out of scope: gas furnace + central A/C, not a heat pump. Useful as a local installer and as a benchmark for exhaust venting.",
+ "price":{"quoted":4760,"low":12148.70,"high":16998.23,"basis":"Ductwork only. Equipment tiers at qty 0; range adds the Good or Best tier."},
+ "imgs":[{"src":"img/hvac/lucas_estimate.webp","cap":"Lucas Heating & Air estimate #114378: line items (customer block removed)"}]},
+{"key":"dc","name":"Design Comfort","contact":"Proposal 165080101 · Jerry Phillips · 10/27/2026","kind":"Local contractor, SLC","scope":false,
+ "offer":"Navien 98% AFUE gas furnace + unnamed modulating heat pump, complete new supply/return duct system (dual fuel). Optional tankless water heater, $5,079.19.",
+ "verdict":"Out of scope: ducted dual-fuel system with no equipment model numbers and no load report. Highest price.",
+ "price":{"quoted":34468.18,"low":33718.18,"high":34468.18,"basis":"Installed system. Range reflects the optional −$750 buyback of existing equipment."},
+ "imgs":[{"src":"img/hvac/designcomfort_proposal.webp","cap":"Design Comfort proposal 165080101: quoted options (customer block removed)"}]}
+],
+"groups":["Scope","Capacity (two outdoor units, altitude derate ×0.96 noted)","Efficiency & certification","Fit & sound","Warranty, sizing & install"],
+"reqs":[
+{"g":0,"id":"R1","t":"System type","req":"All-electric ductless multi-zone heat pump, A2L refrigerant (R-454B/R-32). No gas, no ducts.",
+ "b":{"viga":["R-454B free-match multi-split, 2 outdoor units","ok"],"cooper":["R-454B multi-split, 2 outdoor units","ok"],"tcl":["R-454B multi-zone universal outdoor","ok"],"echo":["Free-match multi-split; refrigerant not stated on sheet","warn"],"lucas":["Gas furnace + 3.5-ton split A/C, ducted","fail"],"dc":["Gas furnace + heat pump (dual fuel), all-new ductwork","fail"]}},
+{"g":0,"id":"R2","t":"Indoor-unit types","req":"Ceiling cassettes and floor units only. No wall-mounted units (owner rule).",
+ "b":{"viga":["MYTC09/12 cassettes + MYTF18 floor/ceiling unit","ok"],"cooper":["ZCV cassettes + ZEV floor/ceiling units","ok"],"tcl":["Wall-mounted only (820 × 306 × 195 mm bodies)","fail"],"echo":["Wall-mounted only","fail"],"lucas":["Ducted registers","fail"],"dc":["Ducted registers","fail"]}},
+{"g":0,"id":"R3","t":"Combination listed","req":"The exact indoor combination appears in the maker's combination table.",
+ "b":{"viga":["9+12+18 on 45K and 9+9+9+9 on 36K are both listed","ok"],"cooper":["No combination table","open"],"tcl":["Table lists capacities, not indoor-unit types","warn"],"echo":["No table","open"],"lucas":["n/a","na"],"dc":["n/a","na"]}},
+{"g":1,"id":"R4","t":"Main-floor max heat @ 5 °F","req":"≥ 22,400 Btu/h nameplate (load 19,100; 95% range 17,000–21,500).",
+ "b":{"viga":["30,000 (28,800 derated)","ok"],"cooper":["Not published. Same platform's 36K sheet: 25,400","open"],"tcl":["42K: 30,000","ok"],"echo":["42K: 29,600","ok"],"lucas":["Gas furnace, 100,000 Btu/h","na"],"dc":["Not stated","open"]}},
+{"g":1,"id":"R5","t":"Lower-level max heat @ 5 °F","req":"≥ 14,000 Btu/h nameplate (load 12,200; 95% range 11,000–13,400).",
+ "b":{"viga":["26,000 (24,960 derated)","ok"],"cooper":["Not published","open"],"tcl":["36K: 25,400","ok"],"echo":["36K: 25,300","ok"],"lucas":["Single ducted system","na"],"dc":["Single ducted system","na"]}},
+{"g":1,"id":"R6","t":"Main-floor heat @ −13 °F","req":"≥ 25,500 Btu/h (load 24,400), or 1.5–2 kW of concealed backup heat.",
+ "b":{"viga":["20,400 (19,600 derated); needs ~1.5–2 kW backup","fail"],"cooper":["Not published (operates to −13 °F)","open"],"tcl":["Not on sheet","open"],"echo":["Not on sheet","open"],"lucas":["Gas heat","na"],"dc":["Heat pump unnamed; gas backup","open"]}},
+{"g":1,"id":"R7","t":"Minimum output @ 47 °F (main)","req":"≤ 6,000 Btu/h, which limits cycling in mild weather (47 °F load 6,800).",
+ "b":{"viga":["6,500","warn"],"cooper":["Not published (same-platform sheet: 6,900)","open"],"tcl":["8,700 (42K heating range)","fail"],"echo":["Not stated","open"],"lucas":["n/a (furnace)","na"],"dc":["Not stated","open"]}},
+{"g":2,"id":"R8","t":"Certified efficiency (AHRI, non-ducted)","req":"AHRI certificate for the outdoor unit with non-ducted indoor units. Certified SEER2/HSPF2, not brochure values.",
+ "b":{"viga":["AHRI 217732866/867: SEER2 19.0, HSPF2 8.5 (brochure claims 24). Verify at ahridirectory.org","warn"],"cooper":["Logos only; AHRI-block SEER2 19–20","open"],"tcl":["Cites AHRI 215387265/266: SEER2 22.5/22, HSPF2 9.5. The PDF sent is for a different TCL model","warn"],"echo":["AHRI-block figures only (SEER2 19, HSPF2 8.5); no certificate","open"],"lucas":["A/C 13.4–16 SEER2; furnace 90–96% AFUE; not a heat pump","fail"],"dc":["No model or rating stated","fail"]}},
+{"g":2,"id":"R9","t":"Cold-climate performance","req":"Capacity at 5 °F ≥ 70% of the 47 °F rating; COP ≥ 1.75 at 5 °F (ENERGY STAR Cold Climate / NEEP).",
+ "b":{"viga":["Main 67% (fails), lower 70%; COP 1.8; ENERGY STAR “NO” in vendor's AHRI block","fail"],"cooper":["COP 1.8; capacity not published","open"],"tcl":["71% / 71%; COP 2.0; ENERGY STAR Cold Climate claimed","ok"],"echo":["≈70% (E-Star block only); COP 1.8–2.0","warn"],"lucas":["n/a","na"],"dc":["Not stated","open"]}},
+{"g":2,"id":"R10","t":"Safety listing & A2L documents","req":"ETL/UL file numbers for the outdoor unit and every indoor unit; UL 60335-2-40 minimum-room-area table.",
+ "b":{"viga":["Neither provided","open"],"cooper":["ETL logo, no file number","open"],"tcl":["Neither provided","open"],"echo":["Neither provided","open"],"lucas":["Major U.S. brands (listing not shown on quote)","ok"],"dc":["Equipment unnamed","open"]}},
+{"g":3,"id":"R11","t":"Lower-level cassette fit","req":"Body ≤ 14¼ in wide × 8¾ in tall to fit a 2×10 joist bay at 16 in o.c.",
+ "b":{"viga":["22½ × 22½ × 10¼ in (4-way): joist header + furring at each","fail"],"cooper":["No dimensions","open"],"tcl":["No cassette offered","na"],"echo":["No cassette offered","na"],"lucas":["n/a","na"],"dc":["n/a","na"]}},
+{"g":3,"id":"R12","t":"Floor unit","req":"≤ 24 in tall × 28 in wide × 9 in deep, dual top/bottom discharge.",
+ "b":{"viga":["MYTF18: 41½ W × 26⅝ H × 9¼ D in, floor/ceiling convertible","fail"],"cooper":["No dimensions; the “ZEV-18” is rated only 9,000 Btu/h","open"],"tcl":["No floor unit offered","na"],"echo":["No floor unit offered","na"],"lucas":["n/a","na"],"dc":["n/a","na"]}},
+{"g":3,"id":"R13","t":"Indoor sound","req":"≤ 38 dB(A) at high fan and ≤ 32 dB(A) at low, in bedrooms and the office.",
+ "b":{"viga":["Cassette 41 high / 33 low; floor 46 / 40","fail"],"cooper":["Cassette 42; floor 42","fail"],"tcl":["Wall units (out of scope)","na"],"echo":["Wall units (out of scope)","na"],"lucas":["n/a","na"],"dc":["n/a","na"]}},
+{"g":3,"id":"R14","t":"Outdoor sound","req":"≤ 55 dB(A) in heating.",
+ "b":{"viga":["65 dB(A)","fail"],"cooper":["Not stated","open"],"tcl":["65 dB(A)","fail"],"echo":["65 dB(A)","fail"],"lucas":["Not stated","open"],"dc":["Not stated","open"]}},
+{"g":4,"id":"R15","t":"Warranty & U.S. support","req":"≥ 10 years on parts and compressor, plus a named U.S. warranty agent and parts stock.",
+ "b":{"viga":["Not stated","open"],"cooper":["Not stated","open"],"tcl":["5 yr parts / 7 yr compressor; 10 yr with registration","warn"],"echo":["Not stated","open"],"lucas":["5-yr labor; equipment warranty not stated","warn"],"dc":["5-yr parts & labor, only with a paid annual maintenance plan","fail"]}},
+{"g":4,"id":"R16","t":"Load-based sizing","req":"Sized from a room-by-room load calculation (house: 27,300 Btu/h heat @ 14 °F; 21,300 Btu/h cooling).",
+ "b":{"viga":["Sized by owner from the house load model","ok"],"cooper":["Sized by owner from the house load model","ok"],"tcl":["Sized by owner from the house load model","ok"],"echo":["Sized by owner from the house load model","ok"],"lucas":["Furnace ≈ 3.7× heat load; A/C ≈ 2× cooling load; no load calculation","fail"],"dc":["Sizing listed at $0; no report delivered","fail"]}},
+{"g":4,"id":"R17","t":"Installation","req":"Licensed installation, permit, line sets, evacuation/charging and startup.",
+ "b":{"viga":["Supply only; separate installer needed","warn"],"cooper":["Supply only","warn"],"tcl":["Supply only","warn"],"echo":["Supply only","warn"],"lucas":["Licensed installer (DOPL #13652729-5501)","ok"],"dc":["Installed","ok"]}}
+]}
+</script>
+<script>
+(function(){
+const H = JSON.parse(document.getElementById('hvacdata').textContent);
+const V = H.vendors, VK = V.map(v => v.key), VBY = Object.fromEntries(V.map(v => [v.key, v]));
+const HV = k => `var(--h-${k})`;
+const fmt = n => "$" + Math.round(n).toLocaleString("en-US");
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const LBL = {ok:"Meets",warn:"Caveat",fail:"Fails",open:"Not documented",na:"n/a"};
+const ICON = {
+  ok:`<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7.5" fill="var(--good)"/><path d="M4.5 8.3l2.3 2.3 4.7-4.9" stroke="#fff" stroke-width="1.8" fill="none"/></svg>`,
+  warn:`<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7.5" fill="var(--warning)"/><path d="M8 4.2v4.6M8 10.9v.9" stroke="#0b0b0b" stroke-width="1.8"/></svg>`,
+  fail:`<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 .8l7.4 13.6H.6z" fill="var(--critical)"/><path d="M8 5.5v4.2M8 11.6v.9" stroke="#fff" stroke-width="1.7"/></svg>`,
+  open:`<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.8" fill="none" stroke="var(--text-3)" stroke-width="1.5" stroke-dasharray="2.5 2"/><path d="M6.3 6.4a1.8 1.8 0 1 1 2.4 1.7c-.5.2-.7.6-.7 1.1v.3M8 11.3v.8" stroke="var(--text-3)" stroke-width="1.4" fill="none"/></svg>`,
+  na:`<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 8h8" stroke="var(--text-3)" stroke-width="1.6"/></svg>`};
+let scope = "all", onlyBad = false;
+const shown = () => V.filter(v => scope === "all" || v.scope);
+const tally = k => { const t = {ok:0,warn:0,fail:0,open:0,na:0}; H.reqs.forEach(r => t[r.b[k][1]]++); return t; };
+
+document.getElementById('hmeta').textContent = `Updated ${H.updated} · ${V.length} bidders · ${H.reqs.length} requirements · ${V.filter(v => v.price).length} priced · prices in USD`;
+document.getElementById('hfoot').textContent = `Generated from HVAC_Bid_Evaluation.md and the bidders' files, ${H.updated}. Quoted prices are as written and may change.`;
+
+/* ---------- summary ---------- */
+function drawSummary(){
+  const rows = shown();
+  const priced = rows.filter(v => v.price);
+  document.getElementById('hsumlede').textContent = priced.length
+    ? "Only the local contractors have priced anything, and both quoted ducted gas-furnace systems. The ductless heat pump bids are still awaiting prices."
+    : "None of the bidders in this view has sent a price yet.";
+  const wrap = document.getElementById('hsumwrap');
+  const W = Math.max(320, wrap.clientWidth || 800), padL = W < 520 ? 116 : 170, padR = W < 520 ? 16 : 230, rowH = 38, top = 8, H2 = top + rows.length*rowH + 26;
+  const max = Math.max(40000, ...priced.map(v => v.price.high)) * 1.05, step = 10000;
+  const x = n => padL + (W - padL - padR) * n / max;
+  let s = `<svg id="hsumchart" class="sumchart" viewBox="0 0 ${W} ${H2}" width="${W}" height="${H2}" role="img" aria-label="Quoted price by HVAC bidder">`;
+  for (let t = 0; t <= max; t += step){
+    s += `<line class="grid" x1="${x(t)}" x2="${x(t)}" y1="${top}" y2="${H2-22}"/><text class="axis" x="${x(t)}" y="${H2-6}" text-anchor="middle">${t ? "$" + t/1000 + "k" : "$0"}</text>`;
+  }
+  rows.forEach((v, i) => {
+    const cy = top + i*rowH + rowH/2, col = HV(v.key);
+    s += `<g class="srow" data-k="${v.key}"><rect x="0" y="${cy-rowH/2}" width="${W}" height="${rowH}" fill="transparent"/>`;
+    s += `<text class="vname" x="${padL-12}" y="${cy+4}" text-anchor="end">${esc(W < 520 ? ({tcl:"TCL",lucas:"Lucas",dc:"Design Comfort"}[v.key] || v.short || v.name) : (v.short || v.name))}</text>`;
+    if (v.price){
+      const p = v.price, x1 = x(p.low), x2 = Math.max(x(p.high), x1 + 10);
+      s += `<rect x="${Math.min(x1, x(p.quoted))}" y="${cy-5}" width="${Math.max(x2, x(p.quoted)) - Math.min(x1, x(p.quoted))}" height="10" rx="5" fill="${col}" fill-opacity=".45"/>`;
+      s += `<circle cx="${x(p.quoted)}" cy="${cy}" r="6" fill="${col}" stroke="var(--surface)" stroke-width="2"/>`;
+      if (W >= 520) s += `<text x="${W-padR+12}" y="${cy+4}">${fmt(p.quoted)}${p.low !== p.quoted || p.high !== p.quoted ? "  ·  " + fmt(Math.min(p.low,p.quoted)) + "–" + fmt(Math.max(p.high,p.quoted)).slice(1) : ""}</text>`;
+    } else {
+      s += `<text x="${x(0)+8}" y="${cy+4}" class="axis" font-style="italic">awaiting price</text>`;
+    }
+    s += `</g>`;
+  });
+  wrap.innerHTML = s + `</svg>`;
+  wrap.querySelectorAll('.srow').forEach(g => {
+    const v = VBY[g.dataset.k], t = tally(v.key);
+    const html = `<b>${esc(v.name)}</b> · ${esc(v.contact)}<br>${v.price ? "Quoted " + fmt(v.price.quoted) + "<br>" + esc(v.price.basis) : "No price yet"}<br>Fails ${t.fail} · not documented ${t.open}`;
+    g.addEventListener('mousemove', e => window.__showTip(html, e.clientX, e.clientY));
+    g.addEventListener('mouseleave', window.__hideTip);
+  });
+  document.getElementById('hsumtable').innerHTML = `<thead><tr><th>Bidder</th><th>Type</th><th class="num">Quoted</th><th class="num">Meets</th><th class="num">Caveat</th><th class="num">Fails</th><th class="num">Not documented</th><th>Standing</th></tr></thead><tbody>` +
+    rows.map(v => { const t = tally(v.key); return `<tr><td><span class="sw" style="background:${HV(v.key)}"></span>${esc(v.name)}<div class="note">${esc(v.contact)}</div></td>
+      <td>${esc(v.kind)}${v.scope ? "" : `<div class="note">No cassette/floor offer</div>`}</td>
+      <td class="num">${v.price ? fmt(v.price.quoted) : "—"}</td><td class="num">${t.ok}</td><td class="num">${t.warn}</td><td class="num">${t.fail ? "<b>" + t.fail + "</b>" : 0}</td><td class="num">${t.open}</td>
+      <td style="min-width:220px">${esc(v.verdict)}</td></tr>`; }).join("") + `</tbody>`;
+}
+
+/* ---------- submissions ---------- */
+function drawSubs(){
+  const rows = shown(), box = document.getElementById('hsubs');
+  box.style.setProperty('--n', rows.length);
+  box.innerHTML = rows.map(v => {
+    const pics = v.imgs.length ? v.imgs.map(im => `<button class="imgbtn" type="button" data-img="${esc(im.src)}" data-cap="${esc(v.name + " · " + im.cap)}" aria-label="Enlarge ${esc(im.cap)}"><img loading="lazy" src="${esc(im.src)}" alt="${esc(im.cap)}"></button>`).join("")
+      : `<div class="noimg">Spreadsheets only; no drawing or brochure</div>`;
+    return `<div class="tile"><div class="vrow"><span class="sw" style="background:${HV(v.key)}"></span>${esc(v.short || v.name)}</div>
+      <div class="note">${esc(v.contact)} · ${esc(v.kind)}</div>${pics}<div class="q">${esc(v.offer)}</div></div>`;
+  }).join("");
+}
+
+/* ---------- requirement cards ---------- */
+function drawCards(){
+  const rows = shown(), box = document.getElementById('hcards');
+  const reqs = H.reqs.filter(r => !onlyBad || rows.some(v => r.b[v.key][1] === "fail"));
+  document.getElementById('hcount').textContent = `Showing ${reqs.length} of ${H.reqs.length} requirements`;
+  if (!reqs.length){ box.innerHTML = `<div class="empty">No requirement is failed by the bidders shown.</div>`; return; }
+  let html = "", lastG = -1;
+  reqs.forEach(r => {
+    if (r.g !== lastG){ html += `<h2 class="hgroup">${esc(H.groups[r.g])}</h2>`; lastG = r.g; }
+    const nfail = rows.filter(v => r.b[v.key][1] === "fail").length, nopen = rows.filter(v => r.b[v.key][1] === "open").length;
+    const pill = nfail ? `${nfail} of ${rows.length} fail` : nopen ? `${nopen} not documented` : "no failures";
+    const tiles = rows.map(v => { const [val, st] = r.b[v.key];
+      return `<div class="tile hst-${st}"><div class="vrow"><span class="sw" style="background:${HV(v.key)}"></span>${esc(v.short || v.name)}</div>
+        <div class="hval">${esc(val)}</div><div class="status">${ICON[st]}<span>${LBL[st]}</span></div></div>`; }).join("");
+    html += `<article class="card" id="hvac-${r.id}"><div class="card-head hreq">
+        <div><div class="req-label">Required · ${esc(r.id)}</div><h3>${esc(r.t)}<span class="pill${nfail ? " pfail" : ""}">${pill}</span></h3>
+        <div class="facts"><span>${esc(r.req)}</span></div></div></div>
+      <div class="htiles" style="--n:${rows.length}">${tiles}</div></article>`;
+  });
+  box.innerHTML = html;
+}
+
+function drawAll(){ drawSummary(); drawSubs(); drawCards(); }
+
+/* ---------- events ---------- */
+document.getElementById('hseg').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return; scope = b.dataset.s;
+  document.querySelectorAll('#hseg button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  drawAll();
+});
+document.getElementById('honlybad').addEventListener('change', e => { onlyBad = e.target.checked; drawCards(); });
+const dlg = document.getElementById('dlg');
+document.getElementById('view-hvac').addEventListener('click', e => {
+  const b = e.target.closest('.imgbtn'); if (!b) return;
+  document.getElementById('dlgimg').src = b.dataset.img; document.getElementById('dlgimg').alt = b.getAttribute('aria-label').replace(/^Enlarge /,'');
+  document.getElementById('dlgcap').textContent = b.dataset.cap; dlg.showModal();
+});
+let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (!document.getElementById('view-hvac').hidden) drawSummary(); }, 120); });
+
+/* ---------- tabs ---------- */
+const TITLES = {wd:"Window & Door Bids", hvac:"Heat Pump Bids"};
+function route(){
+  const t = location.hash === "#hvac" ? "hvac" : "wd";
+  document.getElementById('view-wd').hidden = t !== "wd";
+  document.getElementById('view-hvac').hidden = t !== "hvac";
+  document.querySelectorAll('.apptabs a').forEach(a => a.setAttribute('aria-current', a.dataset.t === t ? "page" : "false"));
+  document.title = TITLES[t];
+  if (t === "hvac") drawAll(); else window.dispatchEvent(new Event('resize'));
+}
+addEventListener('hashchange', route);
+route();
 })();
 </script>
 </body>
