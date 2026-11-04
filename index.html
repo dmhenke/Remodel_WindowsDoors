@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Window & Door Bids</title>
+<meta name="description" content="Side-by-side comparison of window and door bids for the Skyline and Sherwood remodels, opening by opening.">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#f6f5f2; --surface:#fcfcfb; --surface-2:#f0efeb; --line:#e3e1db; --line-strong:#cfccc4;
+  --text:#0b0b0b; --text-2:#52514e; --text-3:#7a7873;
+  --v-andersen:#2a78d6; --v-toma:#eb6834; --v-daji:#1baf7a; --v-nf:#eda100; --v-topbright:#e87ba4;
+  --good:#0ca30c; --critical:#d03b3b; --warning:#fab219;
+  --img-bg:#ffffff; --accent:#2a78d6;
+  --radius:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root:where(:not([data-theme="light"])){
+    color-scheme: dark;
+    --bg:#121211; --surface:#1a1a19; --surface-2:#232321; --line:#2f2e2b; --line-strong:#45443f;
+    --text:#f0efec; --text-2:#c3c2b7; --text-3:#94928a;
+    --v-andersen:#3987e5; --v-toma:#d95926; --v-daji:#199e70; --v-nf:#c98500; --v-topbright:#d55181;
+    --img-bg:#f4f4f2; --accent:#3987e5;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#121211; --surface:#1a1a19; --surface-2:#232321; --line:#2f2e2b; --line-strong:#45443f;
+  --text:#f0efec; --text-2:#c3c2b7; --text-3:#94928a;
+  --v-andersen:#3987e5; --v-toma:#d95926; --v-daji:#199e70; --v-nf:#c98500; --v-topbright:#d55181;
+  --img-bg:#f4f4f2; --accent:#3987e5;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);
+  font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+header.top{padding:36px 0 20px}
+h1{font-size:28px;line-height:1.2;margin:0 0 6px;letter-spacing:-0.01em}
+h2{font-size:19px;margin:0 0 4px}
+h3{font-size:16px;margin:0}
+.sub{color:var(--text-2);margin:0;max-width:760px}
+.meta{color:var(--text-3);font-size:13px;margin-top:8px}
+section{margin:24px 0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+.lede{color:var(--text-2);font-size:14px;margin:0 0 14px}
+/* summary chart */
+#sumchart{width:100%;display:block}
+#sumchart text{font:12px/1 inherit;fill:var(--text-2)}
+#sumchart .vname{fill:var(--text);font-weight:600;font-size:13px}
+#sumchart .grid{stroke:var(--line);stroke-width:1}
+#sumchart .axis{fill:var(--text-3);font-size:11px}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--text-2);margin-top:6px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.lg-range{width:22px;height:8px;border-radius:4px;background:var(--text-3);opacity:.45}
+.lg-dot{width:10px;height:10px;border-radius:50%;background:var(--text-2);box-shadow:0 0 0 2px var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--text-3);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto;margin-top:16px}
+.sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:7px;vertical-align:-1px}
+/* controls */
+.controls{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;position:sticky;top:0;z-index:5;
+  background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);padding:12px 0;border-bottom:1px solid var(--line)}
+.seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:var(--surface);color:var(--text-2);padding:7px 14px;font:inherit;font-size:14px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--line-strong)}
+.seg button[aria-pressed="true"]{background:var(--text);color:var(--surface)}
+label.chk{display:inline-flex;gap:8px;align-items:center;font-size:14px;color:var(--text-2);cursor:pointer}
+.count{font-size:13px;color:var(--text-3);margin-left:auto}
+/* opening cards */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin:16px 0;overflow:hidden}
+.card-head{display:grid;grid-template-columns:150px 1fr;gap:18px;padding:16px 18px;border-bottom:1px solid var(--line);align-items:center}
+.card-head .req svg{width:150px;height:auto;display:block}
+.req-label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);margin-bottom:2px}
+.facts{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:14px;color:var(--text-2);margin-top:6px}
+.facts b{color:var(--text);font-weight:600}
+.pill{display:inline-block;font-size:12px;border:1px solid var(--line-strong);border-radius:999px;padding:1px 9px;color:var(--text-2);margin-left:8px;vertical-align:2px}
+.tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0}
+.tile{padding:14px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:8px;min-width:0}
+.tile:last-child{border-right:0}
+.tile .imgbtn{all:unset;cursor:zoom-in;display:block;background:var(--img-bg);border:1px solid var(--line);border-radius:8px;aspect-ratio:4/3;overflow:hidden}
+.tile .imgbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tile img{width:100%;height:100%;object-fit:contain;display:block}
+.vrow{display:flex;align-items:center;gap:6px;font-weight:600;font-size:14px}
+.vrow .sw{margin:0}
+.q{font-size:13px;color:var(--text-2);line-height:1.4}
+.price{font-variant-numeric:tabular-nums;font-size:16px;font-weight:600}
+.price small{font-weight:400;color:var(--text-3);font-size:12px}
+.bar{height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:0 4px 4px 0}
+.status{font-size:13px;display:flex;gap:6px;align-items:flex-start;line-height:1.35}
+.status svg{flex:none;margin-top:1px}
+.status.ok{color:var(--text-2)}
+.status.bad{color:var(--text)}
+.note{font-size:12px;color:var(--text-3);line-height:1.4}
+.empty{padding:40px;text-align:center;color:var(--text-3)}
+/* tooltip + dialog */
+#tip{position:fixed;pointer-events:none;background:var(--text);color:var(--surface);font-size:13px;padding:8px 10px;border-radius:6px;
+  max-width:260px;opacity:0;transition:opacity .1s;z-index:20;line-height:1.4}
+dialog{border:0;border-radius:12px;padding:0;max-width:min(920px,94vw);background:var(--surface);color:var(--text)}
+dialog::backdrop{background:rgba(0,0,0,.6)}
+dialog .dimg{background:var(--img-bg);padding:12px}
+dialog img{max-width:100%;max-height:70vh;display:block;margin:0 auto}
+dialog .dcap{padding:12px 16px;font-size:14px;color:var(--text-2);display:flex;justify-content:space-between;gap:12px;align-items:center}
+dialog button{font:inherit;border:1px solid var(--line-strong);background:var(--surface);color:var(--text);border-radius:8px;padding:6px 12px;cursor:pointer}
+.notes ul{margin:8px 0 0;padding-left:20px;color:var(--text-2);font-size:14px}
+.notes li{margin:4px 0}
+footer{color:var(--text-3);font-size:13px;padding:24px 0 48px}
+@media (max-width:980px){
+  .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tile{border-bottom:1px solid var(--line)}
+  .tile:nth-child(2n){border-right:0}
+}
+@media (max-width:560px){
+  h1{font-size:23px}
+  .card-head{grid-template-columns:1fr}
+  .card-head .req svg{width:100%;max-width:240px}
+  .tiles{grid-template-columns:1fr}
+  .tile{border-right:0;display:grid;grid-template-columns:120px 1fr;column-gap:12px}
+  .tile .imgbtn{grid-row:span 6}
+  .count{margin-left:0;width:100%}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Window &amp; door bid comparison</h1>
+    <p class="sub">Every quoted opening for the Skyline and Sherwood remodels, side by side: what was ordered, what each bidder actually quoted (with their own drawings), the price, and whether it matches.</p>
+    <div class="meta" id="meta"></div>
+  </header>
+
+  <section class="panel" aria-labelledby="sumh">
+    <h2 id="sumh">Total cost by bidder</h2>
+    <p class="lede" id="sumlede"></p>
+    <div id="sumwrap"></div>
+    <div class="legend">
+      <span><i class="lg-dot"></i>Quoted price (as written on the quote)</span>
+      <span><i class="lg-range"></i>Estimated landed cost incl. duty, freight &amp; tax (low–high)</span>
+    </div>
+    <div class="tablewrap"><table id="sumtable"></table></div>
+  </section>
+
+  <div class="controls" role="toolbar" aria-label="Filters">
+    <div class="seg" id="projseg" role="group" aria-label="Project">
+      <button type="button" data-p="Both" aria-pressed="true">Both projects</button>
+      <button type="button" data-p="Skyline" aria-pressed="false">Skyline</button>
+      <button type="button" data-p="Sherwood" aria-pressed="false">Sherwood</button>
+    </div>
+    <label class="chk"><input type="checkbox" id="onlybad"> Only openings with a mismatched bid</label>
+    <span class="count" id="count"></span>
+  </div>
+
+  <section id="cards" aria-label="Openings"></section>
+
+  <section class="panel notes" aria-labelledby="noteh">
+    <h2 id="noteh">How to read this</h2>
+    <ul>
+      <li><b>Required</b> drawing (left of each card) is drawn from the order schedule: rough-opening size and operation. Quantities above 1 show the count.</li>
+      <li><b>Pictures</b> are each bidder's own drawing for that line, taken from their quote. NF's quote has no drawings, so its tiles show the catalog photo of the quoted product series. Click any picture to enlarge.</li>
+      <li><b>Match</b> means quantity, size (within ½ in) and operation agree with the order. Color is not scored — bidders were not given one finish schedule.</li>
+      <li><b>Bars</b> in each card compare extended price (unit × quantity) within that opening only.</li>
+      <li><b>Landed estimates</b> for imports add 50–75% U.S. import duty on full value (Section 232 aluminum, plus possible Section 301), freight, and 7.75% Utah sales/use tax. Andersen adds tax only. Installation is excluded everywhere.</li>
+      <li><b>Certification:</b> only Andersen supplied NFRC-rated products. NF's catalog claims NFRC ratings (e.g., 68 bifold door U 0.30 double / 0.22 triple; 86 fixed U 0.27; 86 sliding window U 0.43, which would fail the U-0.30 code limit) — unverified until listed in the NFRC directory.</li>
+    </ul>
+    <div class="tablewrap"><table id="qualtable"></table></div>
+  </section>
+
+  <footer id="foot"></footer>
+</div>
+
+<div id="tip" role="tooltip"></div>
+<dialog id="dlg" aria-label="Enlarged drawing">
+  <div class="dimg"><img id="dlgimg" alt=""></div>
+  <div class="dcap"><span id="dlgcap"></span><button type="button" id="dlgclose">Close</button></div>
+</dialog>
+
+<script id="data" type="application/json">{"updated":"2026-11-03","openings":[{"project":"Skyline","pos":"D1","loc":"Southwest door (bifold - owner decision 11/02/2026)","qty":1,"w":190.0,"h":83.0,"op":"Bifold","andersen_items":"100","color":"Black"},{"project":"Skyline","pos":"D2","loc":"Lower level doors","qty":2,"w":72.0,"h":83.0,"op":"Slider","andersen_items":"200, 300","color":"Black"},{"project":"Skyline","pos":"W1","loc":"East (street) L+R","qty":2,"w":35.5,"h":53.5,"op":"Casement","andersen_items":"400, 500","color":"Black"},{"project":"Skyline","pos":"W2","loc":"East (street)","qty":2,"w":35.0,"h":38.0,"op":"Fixed","andersen_items":"600, 700","color":"Black"},{"project":"Skyline","pos":"W3","loc":"North","qty":1,"w":35.5,"h":53.5,"op":"Casement","andersen_items":"800","color":"Black"},{"project":"Skyline","pos":"W4","loc":"North","qty":1,"w":35.5,"h":38.5,"op":"Casement","andersen_items":"900","color":"Black"},{"project":"Skyline","pos":"W5","loc":"North","qty":1,"w":35.0,"h":55.0,"op":"Fixed","andersen_items":"1000","color":"Black"},{"project":"Skyline","pos":"W6","loc":"North","qty":1,"w":35.0,"h":60.0,"op":"Fixed","andersen_items":"1100","color":"Black"},{"project":"Skyline","pos":"W7","loc":"South","qty":1,"w":60.0,"h":72.0,"op":"Fixed","andersen_items":"1200","color":"Black"},{"project":"Skyline","pos":"W8","loc":"South","qty":1,"w":60.0,"h":60.0,"op":"Fixed","andersen_items":"1300","color":"Black"},{"project":"Skyline","pos":"W9","loc":"South (garage)","qty":1,"w":40.0,"h":40.0,"op":"Fixed","andersen_items":"1400","color":"Black"},{"project":"Skyline","pos":"W10","loc":"South transoms over door","qty":4,"w":48.0,"h":36.0,"op":"Fixed","andersen_items":"1500-1800","color":"Black"},{"project":"Sherwood","pos":"SH-D1","loc":"Master bed","qty":1,"w":71.75,"h":79.5,"op":"Slider","andersen_items":"400","color":"White"},{"project":"Sherwood","pos":"SH-W1","loc":"Nook","qty":2,"w":59.5,"h":47.5,"op":"Slider","andersen_items":"100, 200","color":"White"},{"project":"Sherwood","pos":"SH-W2","loc":"Nook","qty":1,"w":62.5,"h":45.5,"op":"Slider","andersen_items":"300","color":"White"},{"project":"Sherwood","pos":"SH-W3","loc":"Base bed S (mulled pair)","qty":2,"w":73.5,"h":35.5,"op":"Fixed","andersen_items":"500, 600","color":"White"},{"project":"Sherwood","pos":"SH-W4","loc":"Base bed W","qty":2,"w":60.5,"h":35.5,"op":"Slider","andersen_items":"700, 800","color":"White"},{"project":"Sherwood","pos":"SH-W5","loc":"Base N","qty":1,"w":70.5,"h":24.5,"op":"Slider","andersen_items":"900","color":"Black"}],"bids":[{"vendor":"Andersen","project":"Skyline","pos":"D1","qty":1,"w":189.75,"h":83.0,"op":"Slider","color":"Black ext / pine int","unit":10569.13,"ext":10569.13,"status":"MISMATCH","reasons":["Type Slider vs Bifold required"],"note":"200 Series 4-panel OXXO slider (NLGD), U 0.29 SHGC 0.20 - owner now wants bifold; re-quote requested","img":"img/andersen_skyline_d1.webp","cap":"Andersen quote drawing (exterior view)"},{"vendor":"Andersen","project":"Skyline","pos":"D2","qty":2,"w":72.0,"h":83.0,"op":"Slider","color":"Black ext / white int","unit":3486.52,"ext":6973.04,"status":"OK","reasons":[],"note":"100 Series gliding door, U 0.30 SHGC 0.20","img":"img/andersen_skyline_d2.webp","cap":"Andersen quote drawing (exterior view)"},{"vendor":"Andersen","project":"Skyline","pos":"W1","qty":2,"w":35.5,"h":53.5,"op":"Casement","color":"Black ext / white int","unit":1300.59,"ext":2601.18,"status":"OK","reasons":[],"note":"100CS, U 0.28 SHGC 0.17, no flange","img":"img/andersen_skyline_w1.webp","cap":"Andersen quote drawing (exterior view)"},{"vendor":"Andersen","project":"Skyline","pos":"W2","qty":2,"w":35.0,"h":38.0,"op":"Fixed","color":"Black ext / white int","unit":688.95,"ext":1377.9,"status":"OK","reasons":[],"note":"100REC insert, U 0.28 SHGC 0.20","img":"img/andersen_skyline_w2.webp","cap":"Andersen quote drawing (exterior view)"},{"vendor":"Andersen","project":"Skyline","pos":"W3","qty":1,"w":35.5,"h":53.5,"op":"Casement","color":"Black ext / white int","unit":1300.59,"ext":1300.59,"status":"OK","reasons":[],"note":"","img":"img/andersen_skyline_w3.webp","cap":"Andersen quote drawing (exterior view)"},{"vendor":"Andersen","project":"Skyline","pos":"W4","qty":1,"w":35.5,"h":38.5,"op":"Casement","color":"Black ext / white int","unit":1152.74,"ext":1152.74,"status":"OK","reasons":[],"note":"","img":"img/andersen_skyline_w4.webp","cap":"Andersen quote drawing (exterior view)"},{"vendor":"Andersen","project":"Skyline","pos":"W5","qty":1,"w":35.0,"h":55.0,"op":"Fixed","color":"Black ext / white int","unit":881.63,"ext":881.63,"status":"OK","reasons":[],"note":"","img":"img/andersen_skyline_w5.webp","cap":"Andersen quote drawing (exterior view)"},{"vendor":"Andersen","project":"Skyline","pos":"W6","qty":1,"w":35.0,"h":60.0,"op":"Fixed","color":"Black ext / white int","unit":881.63,"ext":881.63,"status":"OK","reasons":[],"note":"","img":"img/andersen_skyline_w6.webp","cap":"Andersen quote drawing (exterior view)"},{"vendor":"Andersen","project":"Skyline","pos":"W7","qty":1,"w":60.0,"h":72.0,"op":"Fixed","color":"Black ext / white int","unit":1235.63,"ext":1235.63,"status":"OK","reasons":[],"note":"South glazing quoted low-SHGC (0.20)","img":"img/andersen_skyline_w7.webp","cap":"Andersen quote drawing (exterior view)"},{"vendor":"Andersen","project":"Skyline","pos":"W8","qty":1,"w":60.0,"h":60.0,"op":"Fixed","color":"Black ext / white int","unit":1077.67,"ext":1077.67,"status":"OK","reasons":[],"note":"South glazing quoted low-SHGC (0.20)","img":"img/andersen_skyline_w8.webp","cap":"Andersen quote drawing (exterior view)"},{"vendor":"Andersen","project":"Skyline","pos":"W9","qty":1,"w":40.0,"h":40.0,"op":"Fixed","color":"Black ext / white int","unit":785.29,"ext":785.29,"status":"OK","reasons":[],"note":"","img":"img/andersen_skyline_w9.webp","cap":"Andersen quote drawing (exterior view)"},{"vendor":"Andersen","project":"Skyline","pos":"W10","qty":4,"w":48.0,"h":36.0,"op":"Fixed","color":"Black ext / white int","unit":777.44,"ext":3109.76,"status":"OK","reasons":[],"note":"","img":"img/andersen_skyline_w10.webp","cap":"Andersen quote drawing (exterior view)"},{"vendor":"Andersen","project":"Sherwood","pos":"SH-D1","qty":1,"w":71.75,"h":79.5,"op":"Slider","color":"White","unit":4200.53,"ext":4200.53,"status":"OK","reasons":[],"note":"100 Series gliding door","img":"img/andersen_sherwood_sh-d1.webp","cap":"Andersen quote drawing (exterior view)"},{"vendor":"Andersen","project":"Sherwood","pos":"SH-W1","qty":2,"w":59.5,"h":47.5,"op":"Slider","color":"White","unit":1145.59,"ext":2291.18,"status":"OK","reasons":[],"note":"100GXO insert","img":"img/andersen_sherwood_sh-w1.webp","cap":"Andersen quote drawing (exterior view)"},{"vendor":"Andersen","project":"Sherwood","pos":"SH-W2","qty":1,"w":62.5,"h":45.5,"op":"Slider","color":"White","unit":1145.59,"ext":1145.59,"status":"OK","reasons":[],"note":"","img":"img/andersen_sherwood_sh-w2.webp","cap":"Andersen quote drawing (exterior view)"},{"vendor":"Andersen","project":"Sherwood","pos":"SH-W3","qty":2,"w":73.5,"h":35.5,"op":"Fixed","color":"White","unit":1127.98,"ext":2255.96,"status":"OK","reasons":[],"note":"U 0.27 SHGC 0.22","img":"img/andersen_sherwood_sh-w3.webp","cap":"Andersen quote drawing (exterior view)"},{"vendor":"Andersen","project":"Sherwood","pos":"SH-W4","qty":2,"w":60.5,"h":35.5,"op":"Slider","color":"White","unit":961.78,"ext":1923.56,"status":"OK","reasons":[],"note":"","img":"img/andersen_sherwood_sh-w4.webp","cap":"Andersen quote drawing (exterior view)"},{"vendor":"Andersen","project":"Sherwood","pos":"SH-W5","qty":1,"w":70.5,"h":24.5,"op":"Slider","color":"Black","unit":1077.89,"ext":1077.89,"status":"OK","reasons":[],"note":"Only black-exterior unit on Sherwood","img":"img/andersen_sherwood_sh-w5.webp","cap":"Andersen quote drawing (exterior view)"},{"vendor":"TOMA","project":"Skyline","pos":"D1","qty":1,"w":190.0,"h":83.0,"op":"Bifold","color":"White","unit":2086.0,"ext":2086.0,"status":"OK","reasons":[],"note":"75 series 3+3 bifold, 2.0 mm","img":"img/toma_skyline_d1.webp","cap":"TOMA quote drawing"},{"vendor":"TOMA","project":"Skyline","pos":"D2","qty":2,"w":72.0,"h":83.0,"op":"Swing (French)","color":"White","unit":736.0,"ext":1472.0,"status":"MISMATCH","reasons":["Type Swing (French) vs Slider required"],"note":"55 series 2-sash CASEMENT DOOR, not a slider","img":"img/toma_skyline_d2.webp","cap":"TOMA quote drawing"},{"vendor":"TOMA","project":"Skyline","pos":"W1","qty":2,"w":35.5,"h":53.5,"op":"Casement","color":"Black","unit":229.0,"ext":457.0,"status":"OK","reasons":[],"note":"55 series, 1.4 mm profile","img":"img/toma_skyline_w1.webp","cap":"TOMA quote drawing"},{"vendor":"TOMA","project":"Skyline","pos":"W2","qty":2,"w":35.0,"h":38.0,"op":"Fixed","color":"Black","unit":90.0,"ext":179.0,"status":"OK","reasons":[],"note":"","img":"img/toma_skyline_w2.webp","cap":"TOMA quote drawing"},{"vendor":"TOMA","project":"Skyline","pos":"W3","qty":1,"w":35.5,"h":53.5,"op":"Casement","color":"White","unit":180.0,"ext":180.0,"status":"OK","reasons":[],"note":"","img":"img/toma_skyline_w3.webp","cap":"TOMA quote drawing"},{"vendor":"TOMA","project":"Skyline","pos":"W4","qty":1,"w":35.5,"h":38.5,"op":"Casement","color":"White","unit":155.0,"ext":155.0,"status":"OK","reasons":[],"note":"","img":"img/toma_skyline_w4.webp","cap":"TOMA quote drawing"},{"vendor":"TOMA","project":"Skyline","pos":"W5","qty":1,"w":35.0,"h":55.0,"op":"Fixed","color":"White","unit":108.0,"ext":108.0,"status":"OK","reasons":[],"note":"","img":"img/toma_skyline_w5.webp","cap":"TOMA quote drawing"},{"vendor":"TOMA","project":"Skyline","pos":"W6","qty":1,"w":35.0,"h":60.0,"op":"Fixed","color":"White","unit":116.0,"ext":116.0,"status":"OK","reasons":[],"note":"","img":"img/toma_skyline_w6.webp","cap":"TOMA quote drawing"},{"vendor":"TOMA","project":"Skyline","pos":"W7","qty":1,"w":60.0,"h":72.0,"op":"Fixed","color":"White","unit":208.0,"ext":208.0,"status":"OK","reasons":[],"note":"","img":"img/toma_skyline_w7.webp","cap":"TOMA quote drawing"},{"vendor":"TOMA","project":"Skyline","pos":"W8","qty":1,"w":60.0,"h":60.0,"op":"Fixed","color":"White","unit":178.0,"ext":178.0,"status":"OK","reasons":[],"note":"","img":"img/toma_skyline_w8.webp","cap":"TOMA quote drawing"},{"vendor":"TOMA","project":"Skyline","pos":"W9","qty":1,"w":40.0,"h":40.0,"op":"Fixed","color":"White","unit":92.0,"ext":92.0,"status":"OK","reasons":[],"note":"","img":"img/toma_skyline_w9.webp","cap":"TOMA quote drawing"},{"vendor":"TOMA","project":"Skyline","pos":"W10","qty":4,"w":48.0,"h":36.0,"op":"Fixed","color":"White","unit":98.0,"ext":391.0,"status":"OK","reasons":[],"note":"","img":"img/toma_skyline_w10.webp","cap":"TOMA quote drawing"},{"vendor":"TOMA","project":"Sherwood","pos":"SH-D1","qty":1,"w":71.75,"h":79.5,"op":"Slider","color":"White","unit":545.0,"ext":545.0,"status":"OK","reasons":[],"note":"188 series, 5+20A+5","img":"img/toma_sherwood_sh-d1.webp","cap":"TOMA quote drawing"},{"vendor":"TOMA","project":"Sherwood","pos":"SH-W1","qty":2,"w":59.5,"h":47.5,"op":"Slider","color":"White","unit":239.0,"ext":479.0,"status":"OK","reasons":[],"note":"110 series","img":"img/toma_sherwood_sh-w1.webp","cap":"TOMA quote drawing"},{"vendor":"TOMA","project":"Sherwood","pos":"SH-W2","qty":1,"w":62.5,"h":45.5,"op":"Slider","color":"White","unit":239.0,"ext":239.0,"status":"OK","reasons":[],"note":"","img":"img/toma_sherwood_sh-w2.webp","cap":"TOMA quote drawing"},{"vendor":"TOMA","project":"Sherwood","pos":"SH-W3","qty":2,"w":73.5,"h":35.5,"op":"Fixed","color":"White","unit":138.0,"ext":276.0,"status":"OK","reasons":[],"note":"","img":"img/toma_sherwood_sh-w3.webp","cap":"TOMA quote drawing"},{"vendor":"TOMA","project":"Sherwood","pos":"SH-W4","qty":2,"w":60.5,"h":35.5,"op":"Slider","color":"White","unit":233.0,"ext":465.0,"status":"OK","reasons":[],"note":"","img":"img/toma_sherwood_sh-w4.webp","cap":"TOMA quote drawing"},{"vendor":"TOMA","project":"Sherwood","pos":"SH-W5","qty":1,"w":70.5,"h":24.5,"op":"Slider","color":"Black","unit":229.0,"ext":229.0,"status":"OK","reasons":[],"note":"","img":"img/toma_sherwood_sh-w5.webp","cap":"TOMA quote drawing"},{"vendor":"DAJI","project":"Skyline","pos":"D1","qty":1,"w":190.0,"h":82.99,"op":"Bifold","color":"White","unit":2999.0,"ext":2999.0,"status":"OK","reasons":[],"note":"68# bifold, triple glass, KSBG hardware","img":"img/daji_skyline_d1.webp","cap":"DAJI quote drawing"},{"vendor":"DAJI","project":"Skyline","pos":"D2","qty":2,"w":72.01,"h":82.99,"op":"Slider","color":"White","unit":801.0,"ext":1602.0,"status":"OK","reasons":[],"note":"40# slider, 3.0 mm, laminated triple","img":"img/daji_skyline_d2.webp","cap":"DAJI quote drawing"},{"vendor":"DAJI","project":"Skyline","pos":"W1","qty":2,"w":35.51,"h":53.5,"op":"Casement","color":"Black","unit":329.0,"ext":657.0,"status":"OK","reasons":[],"note":"112# casement, RUNAS hardware","img":"img/daji_skyline_w1.webp","cap":"DAJI quote drawing"},{"vendor":"DAJI","project":"Skyline","pos":"W2","qty":2,"w":35.0,"h":37.99,"op":"Fixed","color":"Black","unit":127.0,"ext":255.0,"status":"OK","reasons":[],"note":"","img":"img/daji_skyline_w2.webp","cap":"DAJI quote drawing"},{"vendor":"DAJI","project":"Skyline","pos":"W3","qty":1,"w":35.51,"h":53.5,"op":"Fixed","color":"Black","unit":156.0,"ext":156.0,"status":"MISMATCH","reasons":["Type Fixed vs Casement required"],"note":"Quoted FIXED - should be casement","img":"img/daji_skyline_w3.webp","cap":"DAJI quote drawing"},{"vendor":"DAJI","project":"Skyline","pos":"W4","qty":1,"w":35.51,"h":38.5,"op":"Fixed","color":"Black","unit":127.0,"ext":127.0,"status":"MISMATCH","reasons":["Type Fixed vs Casement required"],"note":"Quoted FIXED - should be casement","img":"img/daji_skyline_w4.webp","cap":"DAJI quote drawing"},{"vendor":"DAJI","project":"Skyline","pos":"W5","qty":1,"w":35.0,"h":55.0,"op":"Fixed","color":"Black","unit":158.0,"ext":158.0,"status":"OK","reasons":[],"note":"","img":"img/daji_skyline_w5.webp","cap":"DAJI quote drawing"},{"vendor":"DAJI","project":"Skyline","pos":"W6","qty":1,"w":35.0,"h":60.0,"op":"Fixed","color":"Black","unit":173.0,"ext":173.0,"status":"OK","reasons":[],"note":"","img":"img/daji_skyline_w6.webp","cap":"DAJI quote drawing"},{"vendor":"DAJI","project":"Skyline","pos":"W7","qty":1,"w":35.0,"h":72.01,"op":"Fixed","color":"Black","unit":207.0,"ext":207.0,"status":"MISMATCH","reasons":["Size 35 x 72.01 in vs 60 x 72 required"],"note":"Width 889 mm (35 in) - should be 60 in","img":"img/daji_skyline_w7.webp","cap":"DAJI quote drawing"},{"vendor":"DAJI","project":"Skyline","pos":"W8","qty":1,"w":60.0,"h":60.0,"op":"Fixed","color":"Black","unit":296.0,"ext":296.0,"status":"OK","reasons":[],"note":"","img":"img/daji_skyline_w8.webp","cap":"DAJI quote drawing"},{"vendor":"DAJI","project":"Skyline","pos":"W9","qty":1,"w":40.0,"h":40.0,"op":"Fixed","color":"Black","unit":132.0,"ext":132.0,"status":"OK","reasons":[],"note":"","img":"img/daji_skyline_w9.webp","cap":"DAJI quote drawing"},{"vendor":"DAJI","project":"Skyline","pos":"W10","qty":4,"w":47.99,"h":35.98,"op":"Fixed","color":"Black","unit":142.0,"ext":568.0,"status":"OK","reasons":[],"note":"","img":"img/daji_skyline_w10.webp","cap":"DAJI quote drawing"},{"vendor":"DAJI","project":"Sherwood","pos":"SH-D1","qty":1,"w":71.73,"h":79.49,"op":"Slider","color":"White","unit":653.0,"ext":653.0,"status":"OK","reasons":[],"note":"","img":"img/daji_sherwood_sh-d1.webp","cap":"DAJI quote drawing"},{"vendor":"DAJI","project":"Sherwood","pos":"SH-W1","qty":2,"w":59.49,"h":47.52,"op":"Slider","color":"White","unit":324.0,"ext":647.0,"status":"OK","reasons":[],"note":"120# slider","img":"img/daji_sherwood_sh-w1.webp","cap":"DAJI quote drawing"},{"vendor":"DAJI","project":"Sherwood","pos":"SH-W2","qty":1,"w":62.52,"h":45.51,"op":"Slider","color":"White","unit":326.0,"ext":326.0,"status":"OK","reasons":[],"note":"","img":"img/daji_sherwood_sh-w2.webp","cap":"DAJI quote drawing"},{"vendor":"DAJI","project":"Sherwood","pos":"SH-W3","qty":2,"w":73.5,"h":35.51,"op":"Fixed","color":"Black","unit":215.0,"ext":429.0,"status":"OK","reasons":[],"note":"Labeled 'SH-W2' (duplicate label); black vs white","img":"img/daji_sherwood_sh-w3.webp","cap":"DAJI quote drawing"},{"vendor":"DAJI","project":"Sherwood","pos":"SH-W4","qty":2,"w":60.51,"h":35.51,"op":"Slider","color":"White","unit":284.0,"ext":568.0,"status":"OK","reasons":[],"note":"Labeled 'SH-W3'","img":"img/daji_sherwood_sh-w4.webp","cap":"DAJI quote drawing"},{"vendor":"DAJI","project":"Sherwood","pos":"SH-W5","qty":1,"w":70.51,"h":35.51,"op":"Slider","color":"Black","unit":287.0,"ext":287.0,"status":"MISMATCH","reasons":["Size 70.51 x 35.51 in vs 70.5 x 24.5 required"],"note":"Labeled 'SH-W4'; height 902 mm (35.5 in) - should be 24.5 in","img":"img/daji_sherwood_sh-w5.webp","cap":"DAJI quote drawing"},{"vendor":"NF","project":"Skyline","pos":"D1","qty":1,"w":190.0,"h":83.0,"op":"Bifold","color":"Not specified","unit":2391.0,"ext":2391.0,"status":"OK","reasons":[],"note":"68 series, 2.0 mm 6063-T5","img":"img/nf_Bifold.webp","cap":"NF 2026 catalog photo of the quoted series (no per-unit drawing in quote): 68 Series thermal-break folding door"},{"vendor":"NF","project":"Skyline","pos":"D2","qty":2,"w":72.0,"h":83.0,"op":"Slider","color":"Not specified","unit":964.0,"ext":1928.0,"status":"OK","reasons":[],"note":"135 series","img":"img/nf_SliderDoor.webp","cap":"NF 2026 catalog photo of the quoted series (no per-unit drawing in quote): 135 Series heavy-duty sliding door"},{"vendor":"NF","project":"Skyline","pos":"W1","qty":2,"w":35.5,"h":53.5,"op":"Casement","color":"Not specified","unit":306.0,"ext":613.0,"status":"OK","reasons":[],"note":"86 series","img":"img/nf_Casement.webp","cap":"NF 2026 catalog photo of the quoted series (no per-unit drawing in quote): 86 Series slim casement window"},{"vendor":"NF","project":"Skyline","pos":"W2","qty":2,"w":35.0,"h":38.0,"op":"Fixed","color":"Not specified","unit":150.0,"ext":300.0,"status":"OK","reasons":[],"note":"","img":"img/nf_Fixed.webp","cap":"NF 2026 catalog photo of the quoted series (no per-unit drawing in quote): 86 Series fixed window"},{"vendor":"NF","project":"Skyline","pos":"W3","qty":1,"w":35.5,"h":53.5,"op":"Casement","color":"Not specified","unit":288.0,"ext":288.0,"status":"OK","reasons":[],"note":"","img":"img/nf_Casement.webp","cap":"NF 2026 catalog photo of the quoted series (no per-unit drawing in quote): 86 Series slim casement window"},{"vendor":"NF","project":"Skyline","pos":"W4","qty":1,"w":35.5,"h":38.5,"op":"Casement","color":"Not specified","unit":250.0,"ext":250.0,"status":"OK","reasons":[],"note":"","img":"img/nf_Casement.webp","cap":"NF 2026 catalog photo of the quoted series (no per-unit drawing in quote): 86 Series slim casement window"},{"vendor":"NF","project":"Skyline","pos":"W5","qty":1,"w":35.0,"h":55.0,"op":"Fixed","color":"Not specified","unit":186.0,"ext":186.0,"status":"OK","reasons":[],"note":"","img":"img/nf_Fixed.webp","cap":"NF 2026 catalog photo of the quoted series (no per-unit drawing in quote): 86 Series fixed window"},{"vendor":"NF","project":"Skyline","pos":"W6","qty":1,"w":35.0,"h":60.0,"op":"Fixed","color":"Not specified","unit":203.0,"ext":203.0,"status":"OK","reasons":[],"note":"","img":"img/nf_Fixed.webp","cap":"NF 2026 catalog photo of the quoted series (no per-unit drawing in quote): 86 Series fixed window"},{"vendor":"NF","project":"Skyline","pos":"W7","qty":1,"w":60.0,"h":72.0,"op":"Fixed","color":"Not specified","unit":376.0,"ext":376.0,"status":"OK","reasons":[],"note":"","img":"img/nf_Fixed.webp","cap":"NF 2026 catalog photo of the quoted series (no per-unit drawing in quote): 86 Series fixed window"},{"vendor":"NF","project":"Skyline","pos":"W8","qty":1,"w":60.0,"h":60.0,"op":"Fixed","color":"Not specified","unit":314.0,"ext":314.0,"status":"OK","reasons":[],"note":"","img":"img/nf_Fixed.webp","cap":"NF 2026 catalog photo of the quoted series (no per-unit drawing in quote): 86 Series fixed window"},{"vendor":"NF","project":"Skyline","pos":"W9","qty":1,"w":40.0,"h":40.0,"op":"Fixed","color":"Not specified","unit":155.0,"ext":155.0,"status":"OK","reasons":[],"note":"","img":"img/nf_Fixed.webp","cap":"NF 2026 catalog photo of the quoted series (no per-unit drawing in quote): 86 Series fixed window"},{"vendor":"NF","project":"Skyline","pos":"W10","qty":4,"w":48.0,"h":36.0,"op":"Fixed","color":"Not specified","unit":167.0,"ext":669.0,"status":"OK","reasons":[],"note":"","img":"img/nf_Fixed.webp","cap":"NF 2026 catalog photo of the quoted series (no per-unit drawing in quote): 86 Series fixed window"},{"vendor":"NF","project":"Sherwood","pos":"SH-D1","qty":1,"w":71.8,"h":79.5,"op":"Slider","color":"Not specified","unit":920.0,"ext":920.0,"status":"OK","reasons":[],"note":"","img":"img/nf_SliderDoor.webp","cap":"NF 2026 catalog photo of the quoted series (no per-unit drawing in quote): 135 Series heavy-duty sliding door"},{"vendor":"NF","project":"Sherwood","pos":"SH-W1","qty":2,"w":59.5,"h":47.5,"op":"Slider","color":"Not specified","unit":328.0,"ext":656.0,"status":"OK","reasons":[],"note":"","img":"img/nf_SliderWin.webp","cap":"NF 2026 catalog photo of the quoted series (no per-unit drawing in quote): 86 Series sliding window"},{"vendor":"NF","project":"Sherwood","pos":"SH-W2","qty":1,"w":62.5,"h":45.5,"op":"Slider","color":"Not specified","unit":330.0,"ext":330.0,"status":"OK","reasons":[],"note":"","img":"img/nf_SliderWin.webp","cap":"NF 2026 catalog photo of the quoted series (no per-unit drawing in quote): 86 Series sliding window"},{"vendor":"NF","project":"Sherwood","pos":"SH-W3","qty":2,"w":73.5,"h":35.5,"op":"Fixed","color":"Not specified","unit":227.0,"ext":455.0,"status":"OK","reasons":[],"note":"","img":"img/nf_Fixed.webp","cap":"NF 2026 catalog photo of the quoted series (no per-unit drawing in quote): 86 Series fixed window"},{"vendor":"NF","project":"Sherwood","pos":"SH-W4","qty":2,"w":60.5,"h":35.5,"op":"Slider","color":"Not specified","unit":249.0,"ext":499.0,"status":"OK","reasons":[],"note":"","img":"img/nf_SliderWin.webp","cap":"NF 2026 catalog photo of the quoted series (no per-unit drawing in quote): 86 Series sliding window"},{"vendor":"NF","project":"Sherwood","pos":"SH-W5","qty":1,"w":70.5,"h":24.5,"op":"Slider","color":"Not specified","unit":279.0,"ext":279.0,"status":"OK","reasons":[],"note":"","img":"img/nf_SliderWin.webp","cap":"NF 2026 catalog photo of the quoted series (no per-unit drawing in quote): 86 Series sliding window"},{"vendor":"TopBright","project":"Skyline","pos":"D1","qty":1,"w":190.0,"h":83.0,"op":"Bifold","color":"Matt white","unit":3221.58,"ext":3221.58,"status":"OK","reasons":[],"note":"TOP80A, stated U 0.29, nail fin","img":"img/topbright_skyline_d1.webp","cap":"TopBright quote drawing"},{"vendor":"TopBright","project":"Skyline","pos":"D2","qty":2,"w":72.0,"h":83.0,"op":"Bifold","color":"Matt white","unit":1215.53,"ext":2431.06,"status":"MISMATCH","reasons":["Type Bifold vs Slider required"],"note":"Quoted FOLDING door - should be slider","img":"img/topbright_skyline_d2.webp","cap":"TopBright quote drawing"},{"vendor":"TopBright","project":"Skyline","pos":"W1","qty":2,"w":35.5,"h":53.5,"op":"Casement","color":"Matt black","unit":405.83,"ext":811.67,"status":"OK","reasons":[],"note":"Rev 2: width corrected from 23.5 in (was $312.75 ea)","img":"img/topbright_skyline_w1.webp","cap":"TopBright quote drawing"},{"vendor":"TopBright","project":"Skyline","pos":"W2","qty":2,"w":35.0,"h":38.0,"op":"Fixed","color":"Matt black","unit":142.02,"ext":284.04,"status":"OK","reasons":[],"note":"Stated U 0.19","img":"img/topbright_skyline_w2.webp","cap":"TopBright quote drawing"},{"vendor":"TopBright","project":"Skyline","pos":"W3","qty":1,"w":35.5,"h":53.5,"op":"Casement","color":"Matt white","unit":405.83,"ext":405.83,"status":"OK","reasons":[],"note":"","img":"img/topbright_skyline_w3.webp","cap":"TopBright quote drawing"},{"vendor":"TopBright","project":"Skyline","pos":"W4","qty":1,"w":35.5,"h":38.5,"op":"Casement","color":"Matt white","unit":328.99,"ext":328.99,"status":"OK","reasons":[],"note":"","img":"img/topbright_skyline_w4.webp","cap":"TopBright quote drawing"},{"vendor":"TopBright","project":"Skyline","pos":"W5","qty":1,"w":35.0,"h":55.0,"op":"Fixed","color":"Matt white","unit":206.4,"ext":206.4,"status":"OK","reasons":[],"note":"","img":"img/topbright_skyline_w5.webp","cap":"TopBright quote drawing"},{"vendor":"TopBright","project":"Skyline","pos":"W6","qty":1,"w":35.0,"h":60.0,"op":"Fixed","color":"Matt white","unit":225.34,"ext":225.34,"status":"OK","reasons":[],"note":"","img":"img/topbright_skyline_w6.webp","cap":"TopBright quote drawing"},{"vendor":"TopBright","project":"Skyline","pos":"W7","qty":1,"w":60.0,"h":72.0,"op":"Fixed+Casement","color":"Matt white","unit":757.0,"ext":757.0,"status":"MISMATCH","reasons":["Type Fixed+Casement vs Fixed required"],"note":"Added operable sash (not requested)","img":"img/topbright_skyline_w7.webp","cap":"TopBright quote drawing"},{"vendor":"TopBright","project":"Skyline","pos":"W8","qty":1,"w":60.0,"h":60.0,"op":"Fixed+Casement","color":"Matt white","unit":652.5,"ext":652.5,"status":"MISMATCH","reasons":["Type Fixed+Casement vs Fixed required"],"note":"Added operable sash (not requested)","img":"img/topbright_skyline_w8.webp","cap":"TopBright quote drawing"},{"vendor":"TopBright","project":"Skyline","pos":"W9","qty":1,"w":40.0,"h":40.0,"op":"Fixed+Casement","color":"Matt white","unit":362.69,"ext":362.69,"status":"MISMATCH","reasons":["Type Fixed+Casement vs Fixed required"],"note":"Added operable sash (not requested)","img":"img/topbright_skyline_w9.webp","cap":"TopBright quote drawing"},{"vendor":"TopBright","project":"Skyline","pos":"W10","qty":4,"w":48.0,"h":36.0,"op":"Fixed","color":"Matt white","unit":185.11,"ext":740.42,"status":"OK","reasons":[],"note":"","img":"img/topbright_skyline_w10.webp","cap":"TopBright quote drawing"},{"vendor":"TopBright","project":"Sherwood","pos":"SH-D1","qty":1,"w":71.75,"h":79.5,"op":"Bifold","color":"Matt white","unit":1159.89,"ext":1159.89,"status":"MISMATCH","reasons":["Type Bifold vs Slider required"],"note":"Quoted FOLDING door - should be slider","img":"img/topbright_sherwood_sh-d1.webp","cap":"TopBright quote drawing"},{"vendor":"TopBright","project":"Sherwood","pos":"SH-W1","qty":2,"w":59.5,"h":47.5,"op":"Casement","color":"Matt white","unit":674.53,"ext":1349.05,"status":"MISMATCH","reasons":["Type Casement vs Slider required"],"note":"Casement instead of slider","img":"img/topbright_sherwood_sh-w1.webp","cap":"TopBright quote drawing"},{"vendor":"TopBright","project":"Sherwood","pos":"SH-W2","qty":1,"w":62.5,"h":45.5,"op":"Casement","color":"Matt white","unit":677.01,"ext":677.01,"status":"MISMATCH","reasons":["Type Casement vs Slider required"],"note":"Casement instead of slider","img":"img/topbright_sherwood_sh-w2.webp","cap":"TopBright quote drawing"},{"vendor":"TopBright","project":"Sherwood","pos":"SH-W3","qty":1,"w":147.0,"h":35.5,"op":"Fixed","color":"Matt white","unit":686.3,"ext":686.3,"status":"MISMATCH","reasons":["Qty 1 vs 2 required","Size 147 x 35.5 in vs 73.5 x 35.5 required"],"note":"Rev 3: mulled pair replaced by ONE 147 x 35.5 fixed unit, 10 mm triple glass (was 2 x 73.5 at $280.47)","img":"img/topbright_sherwood_sh-w3.webp","cap":"TopBright quote drawing"},{"vendor":"TopBright","project":"Sherwood","pos":"SH-W4","qty":2,"w":60.5,"h":35.5,"op":"Casement","color":"Matt white","unit":576.02,"ext":1152.04,"status":"MISMATCH","reasons":["Type Casement vs Slider required"],"note":"Casement instead of slider","img":"img/topbright_sherwood_sh-w4.webp","cap":"TopBright quote drawing"},{"vendor":"TopBright","project":"Sherwood","pos":"SH-W5","qty":1,"w":70.5,"h":24.5,"op":"Casement","color":"Matt black","unit":514.55,"ext":514.55,"status":"MISMATCH","reasons":["Type Casement vs Slider required"],"note":"Casement instead of slider","img":"img/topbright_sherwood_sh-w5.webp","cap":"TopBright quote drawing"}],"summary":[{"vendor":"Andersen","project":"Skyline","quoted":31946.19,"low":34422.019725,"high":34422.019725,"mism":1,"basis":"Delivered dealer price? Freight/labor/tax shown $0 - confirm","lead":"Not stated","company":"Andersen 100/200 Series via United Subcontractors Inc. (SLC)","quote_ref":"Skyline #10100696; Sherwood #10099085"},{"vendor":"Andersen","project":"Sherwood","quoted":12894.71,"low":13894.050025,"high":13894.050025,"mism":0,"basis":"Delivered dealer price? Freight/labor/tax shown $0 - confirm","lead":"Not stated","company":"Andersen 100/200 Series via United Subcontractors Inc. (SLC)","quote_ref":"Skyline #10100696; Sherwood #10099085"},{"vendor":"TOMA","project":"Skyline","quoted":6928.0,"low":11242.3588300343,"high":13879.6645750858,"mism":1,"basis":"EXW China; C&F Los Angeles quoted","lead":"~30 days after deposit + drawing approval","company":"Hunan TOMA Energy Saving Sci. & Tech.","quote_ref":"PI H07XYY261102 (Proj 1 & 2), rev 11/04 adds C&F"},{"vendor":"TOMA","project":"Sherwood","quoted":3025.0,"low":4791.3799199657,"high":5886.26479991425,"mism":0,"basis":"EXW China; C&F Los Angeles quoted","lead":"~30 days after deposit + drawing approval","company":"Hunan TOMA Energy Saving Sci. & Tech.","quote_ref":"PI H07XYY261102 (Proj 1 & 2), rev 11/04 adds C&F"},{"vendor":"DAJI","project":"Skyline","quoted":7802.42571176179,"low":14856.4295467379,"high":19203.9669629466,"mism":3,"basis":"EXW China + $680 wooden crates","lead":"35-40 days after payment & details","company":"Guangdong DAJI Doors & Windows","quote_ref":"QT-C-DH r26.11.2"},{"vendor":"DAJI","project":"Sherwood","quoted":3117.57428823821,"low":6025.52045326211,"high":7852.05803705338,"mism":1,"basis":"EXW China + $680 wooden crates","lead":"35-40 days after payment & details","company":"Guangdong DAJI Doors & Windows","quote_ref":"QT-C-DH r26.11.2"},{"vendor":"NF","project":"Skyline","quoted":8228.79495501387,"low":15545.5488361441,"high":20007.9394672538,"mism":0,"basis":"EXW China + $800 wooden crates","lead":"30 days after order + payment","company":"Foshan NF Windows & Doors System","quote_ref":"PI NF-2026-11-02"},{"vendor":"NF","project":"Sherwood","quoted":3383.20504498613,"low":6454.84616385594,"high":8352.93803274618,"mism":0,"basis":"EXW China + $800 wooden crates","lead":"30 days after order + payment","company":"Foshan NF Windows & Doors System","quote_ref":"PI NF-2026-11-02"},{"vendor":"TopBright","project":"Skyline","quoted":14850.3973032616,"low":19542.1130917461,"high":24670.5977654563,"mism":4,"basis":"EXW + $394 crates; DDP to 84108 quoted ($5,972, unchanged since rev 1)","lead":"45 days production + 45 days shipping","company":"Guangzhou TopBright Building Materials","quote_ref":"DAV260806 rev 3 (11/03; supersedes rev 1-2)"},{"vendor":"TopBright","project":"Sherwood","quoted":7482.16269673841,"low":10133.4814207539,"high":12644.6791657938,"mism":6,"basis":"EXW + $394 crates; DDP to 84108 quoted ($5,972, unchanged since rev 1)","lead":"45 days production + 45 days shipping","company":"Guangzhou TopBright Building Materials","quote_ref":"DAV260806 rev 3 (11/03; supersedes rev 1-2)"}],"quality":{"Andersen":{"frame":4,"glazing":3,"hardware":4,"cert":5,"vendor":5,"composite":4.2},"TOMA":{"frame":2,"glazing":2,"hardware":2,"cert":1,"vendor":2,"composite":1.8},"DAJI":{"frame":4,"glazing":4,"hardware":3,"cert":1,"vendor":2,"composite":2.8},"NF":{"frame":3,"glazing":3,"hardware":3,"cert":1,"vendor":4,"composite":2.8},"TopBright":{"frame":3,"glazing":4,"hardware":4,"cert":2,"vendor":3,"composite":3.2}}}</script>
+<script>
+(function(){
+const D = JSON.parse(document.getElementById('data').textContent);
+const VENDORS = ["Andersen","TOMA","DAJI","NF","TopBright"];
+const VLABEL = {Andersen:"Andersen", TOMA:"TOMA", DAJI:"DAJI", NF:"NF", TopBright:"TopBright"};
+const VVAR = v => `var(--v-${v.toLowerCase()})`;
+const fmt = n => "$" + Math.round(n).toLocaleString("en-US");
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const inch = n => (Math.round(n*4)/4).toString() + "″";
+let proj = "Both", onlyBad = false;
+
+document.getElementById('meta').textContent = `Updated ${D.updated} · ${D.openings.length} openings · ${VENDORS.length} bidders · prices in USD`;
+document.getElementById('foot').textContent = `Generated from the bid comparison workbook, ${D.updated}. Bid prices are as quoted and may change; landed costs are estimates.`;
+
+/* ---------- tooltip ---------- */
+const tip = document.getElementById('tip');
+function showTip(html, x, y){ tip.innerHTML = html; tip.style.opacity = 1;
+  const r = tip.getBoundingClientRect(); let L = x + 14, T = y + 14;
+  if (L + r.width > innerWidth - 8) L = x - r.width - 14; if (T + r.height > innerHeight - 8) T = y - r.height - 14;
+  tip.style.left = L + "px"; tip.style.top = T + "px"; }
+function hideTip(){ tip.style.opacity = 0; }
+
+/* ---------- summary ---------- */
+function sumRows(){
+  return VENDORS.map(v => {
+    const rows = D.summary.filter(s => s.vendor === v && (proj === "Both" || s.project === proj));
+    const add = k => rows.reduce((a, r) => a + r[k], 0);
+    const q = D.quality[v] || {};
+    return {vendor:v, quoted:add("quoted"), low:add("low"), high:add("high"), mism:add("mism"),
+            basis:rows[0]?.basis, lead:rows[0]?.lead, company:rows[0]?.company, quality:q.composite};
+  });
+}
+function drawSummary(){
+  const rows = sumRows();
+  document.getElementById('sumlede').textContent = proj === "Both"
+    ? "Both houses combined. Dots are the price on each quote; bars are what each bid is likely to cost delivered and taxed."
+    : `${proj} only. Dots are the price on each quote; bars are what each bid is likely to cost delivered and taxed.`;
+  if (proj !== "Sherwood") document.getElementById('sumlede').textContent += " Andersen's figure still includes its D1 slider ($10,569); a folding-door re-quote is pending.";
+  const wrap = document.getElementById('sumwrap');
+  const W = Math.max(320, wrap.clientWidth || 800), padL = W < 520 ? 84 : 110, padR = W < 520 ? 16 : 230, rowH = 38, top = 8, H = top + rows.length*rowH + 26;
+  const max = Math.max(...rows.map(r => Math.max(r.high, r.quoted))) * 1.05;
+  const step = max > 40000 ? 10000 : 5000;
+  const x = v => padL + (W - padL - padR) * v / max;
+  let s = `<svg id="sumchart" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Quoted and estimated landed cost by bidder">`;
+  for (let t = 0; t <= max; t += step){
+    s += `<line class="grid" x1="${x(t)}" x2="${x(t)}" y1="${top}" y2="${H-22}"/>`;
+    s += `<text class="axis" x="${x(t)}" y="${H-6}" text-anchor="middle">${t ? "$" + t/1000 + "k" : "$0"}</text>`;
+  }
+  rows.forEach((r, i) => {
+    const cy = top + i*rowH + rowH/2, col = VVAR(r.vendor);
+    const x1 = x(r.low), x2 = Math.max(x(r.high), x1 + 10);
+    s += `<g class="srow" data-i="${i}">`;
+    s += `<rect x="0" y="${cy-rowH/2}" width="${W}" height="${rowH}" fill="transparent"/>`;
+    s += `<text class="vname" x="${padL-12}" y="${cy+4}" text-anchor="end">${esc(VLABEL[r.vendor])}</text>`;
+    s += `<rect x="${x1}" y="${cy-5}" width="${x2-x1}" height="10" rx="5" fill="${col}" fill-opacity=".45"/>`;
+    s += `<circle cx="${x(r.quoted)}" cy="${cy}" r="6" fill="${col}" stroke="var(--surface)" stroke-width="2"/>`;
+    if (W >= 520) s += `<text x="${W-padR+12}" y="${cy+4}">${fmt(r.quoted)}  →  ${r.low===r.high?fmt(r.low):fmt(r.low)+"–"+fmt(r.high).slice(1)}</text>`;
+    s += `</g>`;
+  });
+  s += `</svg>`;
+  wrap.innerHTML = s;
+  wrap.querySelectorAll('.srow').forEach(g => {
+    const r = rows[+g.dataset.i];
+    const html = `<b>${esc(r.vendor)}</b><br>Quoted: ${fmt(r.quoted)} (${esc(r.basis)})<br>Est. landed + tax: ${fmt(r.low)}–${fmt(r.high)}<br>Mismatched lines: ${r.mism}`;
+    g.addEventListener('mousemove', e => showTip(html, e.clientX, e.clientY));
+    g.addEventListener('mouseleave', hideTip);
+  });
+  const t = document.getElementById('sumtable');
+  t.innerHTML = `<thead><tr><th>Bidder</th><th class="num">Quoted</th><th class="num">Est. landed + tax</th><th class="num">Mismatched lines</th><th class="num">Quality (1–5)</th><th>Price basis</th><th>Lead time</th></tr></thead><tbody>` +
+    rows.map(r => `<tr><td><span class="sw" style="background:${VVAR(r.vendor)}"></span>${esc(r.vendor)}<div class="note">${esc(r.company)}</div></td>
+      <td class="num">${fmt(r.quoted)}</td><td class="num">${r.low===r.high?fmt(r.low):fmt(r.low)+" – "+fmt(r.high)}</td>
+      <td class="num">${r.mism}</td><td class="num">${r.quality?.toFixed(1) ?? "–"}</td><td>${esc(r.basis)}</td><td>${esc(r.lead)}</td></tr>`).join("") + `</tbody>`;
+}
+
+/* ---------- required-operation schematic ---------- */
+function reqSVG(o){
+  const BW = 150, pad = 8;
+  const sc = Math.min((BW - 2*pad)/o.w, (110 - 2*pad - 14)/o.h);
+  const w = o.w*sc, h = o.h*sc, x0 = (BW - w)/2, y0 = pad;
+  const st = `stroke="var(--text-2)" stroke-width="1.5" fill="none"`;
+  let g = `<rect x="${x0}" y="${y0}" width="${w}" height="${h}" fill="var(--surface-2)" stroke="var(--text)" stroke-width="2" rx="1"/>`;
+  const panes = o.op === "Bifold" ? 6 : o.op === "Slider" ? 2 : 1;
+  for (let k = 1; k < panes; k++) g += `<line x1="${x0+w*k/panes}" x2="${x0+w*k/panes}" y1="${y0}" y2="${y0+h}" stroke="var(--text)" stroke-width="1.5"/>`;
+  if (o.op === "Casement") g += `<polyline points="${x0+3},${y0+3} ${x0+w-3},${y0+h/2} ${x0+3},${y0+h-3}" ${st} stroke-dasharray="3 2"/>`;
+  if (o.op === "Slider"){ const cy = y0 + h/2, ax = x0 + w*0.25; g += `<path d="M${ax-8} ${cy}h16m-5 -4l5 4l-5 4" ${st}/>`; }
+  if (o.op === "Bifold"){ let d = ""; for (let k = 0; k < panes; k++){ const px = x0 + w*k/panes, pw = w/panes; d += k%2 ? `M${px+pw} ${y0+3}L${px+3} ${y0+h/2}L${px+pw} ${y0+h-3}` : `M${px} ${y0+3}L${px+pw-3} ${y0+h/2}L${px} ${y0+h-3}`; } g += `<path d="${d}" ${st} stroke-dasharray="3 2"/>`; }
+  if (o.op === "Fixed") g += `<text x="${x0+w/2}" y="${y0+h/2+4}" text-anchor="middle" font-size="11" fill="var(--text-3)">fixed</text>`;
+  const BH = y0 + h + 22;
+  g += `<text x="${BW/2}" y="${BH-4}" text-anchor="middle" font-size="11" fill="var(--text-2)">${esc(inch(o.w))} × ${esc(inch(o.h))} RO</text>`;
+  return `<svg viewBox="0 0 ${BW} ${BH}" aria-hidden="true">${g}</svg>`;
+}
+const ICON_OK = `<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7.5" fill="var(--good)"/><path d="M4.5 8.3l2.3 2.3 4.7-4.9" stroke="#fff" stroke-width="1.8" fill="none"/></svg>`;
+const ICON_BAD = `<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 .8l7.4 13.6H.6z" fill="var(--critical)"/><path d="M8 5.5v4.2M8 11.6v.9" stroke="#fff" stroke-width="1.7"/></svg>`;
+
+/* ---------- cards ---------- */
+function drawCards(){
+  const box = document.getElementById('cards');
+  const ops = D.openings.filter(o => proj === "Both" || o.project === proj).filter(o => {
+    if (!onlyBad) return true;
+    return D.bids.some(b => b.project === o.project && b.pos === o.pos && b.status === "MISMATCH");
+  });
+  document.getElementById('count').textContent = `Showing ${ops.length} of ${D.openings.filter(o => proj === "Both" || o.project === proj).length} openings`;
+  if (!ops.length){ box.innerHTML = `<div class="empty">No openings match these filters.</div>`; return; }
+  box.innerHTML = ops.map(o => {
+    const bids = VENDORS.map(v => D.bids.find(b => b.vendor === v && b.project === o.project && b.pos === o.pos)).filter(Boolean);
+    const mx = Math.max(...bids.map(b => b.ext));
+    const tiles = bids.map(b => {
+      const ok = b.status !== "MISMATCH";
+      const stat = ok ? `<div class="status ok">${ICON_OK}<span>${b.status === "OK" ? "Matches order" : "Accepted deviation"}</span></div>`
+                      : `<div class="status bad">${ICON_BAD}<span><b>Mismatch</b> — ${esc(b.reasons.join("; "))}</span></div>`;
+      const alt = `${b.vendor} drawing for ${o.project} ${o.pos}: ${b.op}, ${b.w} by ${b.h} inches`;
+      return `<div class="tile">
+        <button class="imgbtn" type="button" data-img="${esc(b.img)}" data-cap="${esc(b.vendor + " · " + o.project + " " + o.pos + " — " + b.cap)}" aria-label="Enlarge ${esc(alt)}"><img loading="lazy" src="${esc(b.img)}" alt="${esc(alt)}"></button>
+        <div class="vrow"><span class="sw" style="background:${VVAR(b.vendor)}"></span>${esc(b.vendor)}</div>
+        <div class="q">${esc(b.op)} · ${esc(inch(b.w))} × ${esc(inch(b.h))} · qty ${b.qty}<br>${esc(b.color)}</div>
+        <div class="price">${fmt(b.ext)} ${b.qty > 1 ? `<small>(${fmt(b.unit)} ea)</small>` : ""}</div>
+        <div class="bar" title="${fmt(b.ext)}"><i style="width:${(100*b.ext/mx).toFixed(1)}%;background:${VVAR(b.vendor)}"></i></div>
+        ${stat}
+        ${b.note ? `<div class="note">${esc(b.note)}</div>` : ""}
+      </div>`;
+    }).join("");
+    const nbad = bids.filter(b => b.status === "MISMATCH").length;
+    return `<article class="card" id="${esc(o.project + "-" + o.pos)}">
+      <div class="card-head">
+        <div class="req"><div class="req-label">Required</div>${reqSVG(o)}</div>
+        <div>
+          <h3>${esc(o.project)} · ${esc(o.pos)}<span class="pill">${nbad ? nbad + " of " + bids.length + " bids mismatched" : "all bids match"}</span></h3>
+          <div class="facts"><span><b>${esc(o.op)}</b>${o.qty > 1 ? " × " + o.qty : ""}</span><span>${esc(o.loc)}</span><span>RO ${esc(inch(o.w))} × ${esc(inch(o.h))}</span><span>Andersen item ${esc(o.andersen_items)}</span>
+          <span>Lowest ${fmt(Math.min(...bids.map(b => b.ext)))} · highest ${fmt(mx)}</span></div>
+        </div>
+      </div>
+      <div class="tiles">${tiles}</div>
+    </article>`;
+  }).join("");
+}
+
+/* ---------- quality table ---------- */
+(function(){
+  const t = document.getElementById('qualtable');
+  const cols = [["frame","Frame"],["glazing","Glass & thermal"],["hardware","Hardware & warranty"],["cert","Certification"],["vendor","Reliability"],["composite","Overall"]];
+  t.innerHTML = `<caption style="text-align:left;font-weight:600;padding:16px 0 6px">Quality scores (1 = poor or unverified, 5 = best in this set)</caption><thead><tr><th>Bidder</th>${cols.map(c => `<th class="num">${c[1]}</th>`).join("")}</tr></thead><tbody>` +
+    VENDORS.map(v => `<tr><td><span class="sw" style="background:${VVAR(v)}"></span>${v}</td>${cols.map(c => `<td class="num">${c[0]==="composite" ? "<b>"+D.quality[v][c[0]].toFixed(1)+"</b>" : D.quality[v][c[0]]}</td>`).join("")}</tr>`).join("") + `</tbody>`;
+})();
+
+/* ---------- events ---------- */
+document.getElementById('projseg').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return; proj = b.dataset.p;
+  document.querySelectorAll('#projseg button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  drawSummary(); drawCards();
+});
+document.getElementById('onlybad').addEventListener('change', e => { onlyBad = e.target.checked; drawCards(); });
+const dlg = document.getElementById('dlg');
+document.getElementById('cards').addEventListener('click', e => {
+  const b = e.target.closest('.imgbtn'); if (!b) return;
+  document.getElementById('dlgimg').src = b.dataset.img; document.getElementById('dlgimg').alt = b.getAttribute('aria-label').replace(/^Enlarge /,'');
+  document.getElementById('dlgcap').textContent = b.dataset.cap; dlg.showModal();
+});
+document.getElementById('dlgclose').addEventListener('click', () => dlg.close());
+dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(drawSummary, 120); });
+drawSummary(); drawCards();
+})();
+</script>
+</body>
+</html>
