@@ -169,7 +169,10 @@ footer{color:var(--text-3);font-size:13px;padding:24px 0 48px}
 .pl-glass{stroke:var(--pl-glass);stroke-width:5}
 .pl-cas{fill:var(--pl-cas);stroke:var(--surface);stroke-width:1.5}
 .pl-con{fill:var(--pl-con);stroke:var(--surface);stroke-width:1.5}
-.pl-alt{fill:none;stroke:var(--pl-con);stroke-width:1.5;stroke-dasharray:3 2}
+.pl-cas-opt{fill:none;stroke:var(--pl-cas);stroke-width:2.5;stroke-dasharray:4 3}
+.pl-optline{stroke-dasharray:5 3}
+.pl-badge-opt rect{fill:var(--surface);stroke:var(--pl-badge);stroke-width:1.5;stroke-dasharray:3 2}
+.pl-badge-opt text{fill:var(--text)}
 .pl-pad{fill:var(--pl-deck);stroke:var(--text-3);stroke-width:1}
 .pl-odu{fill:var(--surface);stroke:var(--text);stroke-width:2.5}
 .pl-odutxt{fill:var(--text);font-size:11px;font-weight:600}
@@ -187,7 +190,7 @@ footer{color:var(--text-3);font-size:13px;padding:24px 0 48px}
 .pl-orient{fill:var(--text-3);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
 .pl-compass circle{fill:none;stroke:var(--line-strong)} .pl-compass line{stroke:var(--text);stroke-width:2} .pl-compass text{fill:var(--text);font-size:12px;font-weight:600}
 .pl-legend i{display:inline-block;width:18px;height:10px;border-radius:2px}
-.k-cas{background:var(--pl-cas)} .k-con{background:var(--pl-con)} .k-odu{border:2px solid var(--text);background:var(--surface)}
+.k-cas{background:var(--pl-cas)} .k-opt{border:2px dashed var(--pl-cas)} .k-con{background:var(--pl-con)} .k-odu{border:2px solid var(--text);background:var(--surface)}
 .k-lm{background:var(--pl-lm);height:3px!important} .k-ll{background:repeating-linear-gradient(90deg,var(--pl-ll) 0 7px,transparent 7px 10px);height:3px!important}
 .k-glass{background:var(--pl-glass);height:4px!important}
 .pl-legend{margin-top:12px}
@@ -281,7 +284,7 @@ footer{color:var(--text-3);font-size:13px;padding:24px 0 48px}
     <p class="lede">Two outdoor units on one pad: <b>ODU-M</b> serves the main floor and <b>ODU-L</b> serves the lower level. Each indoor unit has its own line pair straight from its outdoor unit, so there are no branch boxes and no ducts. Wall-mounted units are excluded (owner rule). The plans follow the architect's sheet orientation (AE101/AE102, 10.16.2026) and are schematic.</p>
 
     <figure class="planfig">
-      <figcaption><b>Main floor</b> · 3 indoor units on ODU-M · lines rise in a chase beside the stair and through the attic, or up through the floor</figcaption>
+      <figcaption><b>Main floor</b> · 4 indoor units on ODU-M, plus an optional 5th in the entry · lines rise in a chase beside the stair and through the attic, or up through the floor</figcaption>
       <div class="plan"><svg class="plansvg" viewBox="0 0 776 600" role="img" aria-label="Main floor plan showing a floor unit in the great room and ceiling cassettes in the primary bedroom and office">
 <defs>
 <marker id="pl-ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="pl-ahfill"/></marker>
@@ -304,7 +307,7 @@ footer{color:var(--text-3);font-size:13px;padding:24px 0 48px}
 <rect class="pl-room" x="264.0" y="433.4" width="99.0" height="114.4"/>
 <text class="pl-lbl" x="293.7" y="452.1" text-anchor="middle">Office</text>
 <rect class="pl-room" x="390.5" y="397.1" width="99.0" height="150.7"/>
-<text class="pl-lbl" x="463.1" y="427.9" text-anchor="middle">Entry</text>
+<text class="pl-lbl" x="412" y="440" text-anchor="middle">Entry</text>
 <rect class="pl-room" x="491.7" y="397.1" width="79.2" height="46.2"/>
 <text class="pl-lbl" x="531.3" y="437.8" text-anchor="middle">Hall</text>
 <rect class="pl-room" x="493.9" y="446.6" width="110.0" height="101.2"/>
@@ -318,14 +321,15 @@ footer{color:var(--text-3);font-size:13px;padding:24px 0 48px}
 <line class="pl-glass" x1="291.5" y1="148.5" x2="529.1" y2="148.5"/>
 <line class="pl-glass" x1="594.0" y1="234.3" x2="643.5" y2="234.3"/>
 <!-- M-1 floor unit, WNW notch wall, blowing ESE along the glass -->
-<line class="pl-throw" x1="561" y1="192" x2="330" y2="192" marker-end="url(#pl-ah)"/>
-<rect class="pl-con" x="556.5" y="170" width="11" height="48" rx="2"/>
-<circle class="pl-up" cx="562" cy="226" r="5"/>
-<g class="pl-badge"><rect x="490" y="204" width="62" height="18" rx="9"/><text x="521" y="217" text-anchor="middle">M-1 · 18k</text></g>
-<text class="pl-sub" x="430" y="182" text-anchor="middle">floor unit, low · blows along the glass</text>
-<!-- optional second floor unit -->
-<rect class="pl-alt" x="264.0" y="172.7" width="7.7" height="33.0" rx="2"/>
-<text class="pl-sub" x="280" y="230" text-anchor="start">alt. 2nd floor unit (not selected)</text>
+<line class="pl-throw" x1="555" y1="184" x2="440" y2="184" marker-end="url(#pl-ah)"/>
+<rect class="pl-con" x="556.5" y="168" width="11" height="34" rx="2"/>
+<circle class="pl-up" cx="562" cy="212" r="5"/>
+<g class="pl-badge"><rect x="490" y="196" width="62" height="18" rx="9"/><text x="521" y="209" text-anchor="middle">M-1 · 12k</text></g>
+<line class="pl-throw" x1="277" y1="200" x2="392" y2="200" marker-end="url(#pl-ah)"/>
+<rect class="pl-con" x="264.5" y="184" width="11" height="34" rx="2"/>
+<circle class="pl-up" cx="270" cy="228" r="5"/>
+<g class="pl-badge"><rect x="282" y="210" width="56" height="18" rx="9"/><text x="310" y="223" text-anchor="middle">M-2 · 9k</text></g>
+<text class="pl-sub" x="416" y="170" text-anchor="middle">two low floor consoles · blow toward each other along the glass</text>
 <!-- M-3 cassette -->
 <line class="pl-throw" x1="637" y1="313.5" x2="712" y2="313.5" marker-end="url(#pl-ah)"/>
 <rect class="pl-cas" x="616.5" y="296" width="22" height="22"/>
@@ -336,7 +340,11 @@ footer{color:var(--text-3);font-size:13px;padding:24px 0 48px}
 <g class="pl-badge"><rect x="330" y="468" width="56" height="18" rx="9"/><text x="358" y="481" text-anchor="middle">M-4 · 9k</text></g>
 <!-- riser and attic runs -->
 <circle class="pl-riser" cx="437.8" cy="460" r="6"/>
-<text class="pl-tiny" x="452" y="476" text-anchor="start">R (chase)</text>
+<text class="pl-tiny" x="428" y="464" text-anchor="end">R</text>
+<polyline class="pl-lineM pl-optline" points="437.8,460 456,460 456,474"/>
+<rect class="pl-cas-opt" x="450" y="474" width="22" height="22"/>
+<line class="pl-throw" x1="461" y1="498" x2="461" y2="540" marker-end="url(#pl-ah)"/>
+<g class="pl-badge pl-badge-opt"><rect x="442" y="434" width="46" height="18" rx="9"/><text x="465" y="447" text-anchor="middle">M-5 opt</text></g>
 <polyline class="pl-lineM" points="437.8,460 437.8,414.7 313.5,414.7 313.5,466"/>
 <polyline class="pl-lineM" points="437.8,460 437.8,414.7 595.1,414.7 595.1,307 616.5,307"/>
 <text class="pl-tiny" x="515" y="408" text-anchor="middle">attic, insulated</text>
@@ -394,9 +402,11 @@ footer{color:var(--text-3);font-size:13px;padding:24px 0 48px}
 <polyline class="pl-lineM" points="78,184 78,172 548,172 548,205 562,205"/>
 <circle class="pl-up" cx="562" cy="205" r="6"/>
 <text class="pl-tiny" x="562" y="226" text-anchor="middle">up to M-1</text>
+<circle class="pl-up" cx="300" cy="172" r="6"/>
+<text class="pl-tiny" x="300" y="160" text-anchor="middle">up to M-2</text>
 <polyline class="pl-lineM" points="264,172 264,394 437.8,394 437.8,460"/>
 <circle class="pl-riser" cx="437.8" cy="460" r="6"/>
-<text class="pl-tiny" x="449" y="482" text-anchor="start">R ↑</text>
+<text class="pl-tiny" x="449" y="482" text-anchor="start">R ↑ M-3, M-4, M-5</text>
 <!-- lower bundle: 4 pairs -->
 <polyline class="pl-lineL" points="164,212 271,212 271,236 330,236"/>
 <polyline class="pl-lineL" points="271,236 271,443 478.5,443 478.5,286"/>
@@ -425,7 +435,8 @@ footer{color:var(--text-3);font-size:13px;padding:24px 0 48px}
     </figure>
     <div class="legend pl-legend">
       <span><i class="k-cas"></i>Ceiling cassette</span>
-      <span><i class="k-con"></i>Floor unit</span>
+      <span><i class="k-con"></i>Floor console</span>
+      <span><i class="k-opt"></i>Optional unit</span>
       <span><i class="k-odu"></i>Outdoor unit</span>
       <span><i class="k-lm"></i>ODU-M line sets (main floor)</span>
       <span><i class="k-ll"></i>ODU-L line sets (lower level)</span>
@@ -437,9 +448,9 @@ footer{color:var(--text-3);font-size:13px;padding:24px 0 48px}
     <div class="tablewrap"><table class="reqtbl">
       <thead><tr><th>Requirement</th><th>ODU-M · main floor (M-1, M-3, M-4)</th><th>ODU-L · lower level (L-1 to L-4)</th></tr></thead>
       <tbody>
-        <tr><td>Indoor-unit ports</td><td>≥ 3 used; a 4- or 5-port unit</td><td>4 used; a 4-port unit</td></tr>
-        <tr><td>Connected indoor capacity</td><td>39k (18 + 12 + 9)</td><td>36k (4 × 9)</td></tr>
-        <tr><td>Size class</td><td>36–45K. Selected: Bestcold 45K (5-port)</td><td>36K. Smaller models have only 2–3 ports, so the port count, not the load, sets the size</td></tr>
+        <tr><td>Indoor-unit ports</td><td>4 used, 5 with optional M-5. Order a <b>5-port</b> unit either way</td><td>4 used; a 4-port unit</td></tr>
+        <tr><td>Connected indoor capacity</td><td>42k (12 + 9 + 12 + 9). With M-5: 51k (+ 9). Both combinations (9+9+12+12, 9+9+9+12+12) are on the Bestcold 45K and TCL 42K charts</td><td>36k (4 × 9)</td></tr>
+        <tr><td>Size class</td><td>42–45K, 5-port (Bestcold MYTM45 / TCL H42FMH20XPC)</td><td>36K. Smaller models have only 2–3 ports, so the port count, not the load, sets the size</td></tr>
         <tr><td>Heat load @ 5 °F (95% interval)</td><td>19,500 (17,400–21,900)</td><td>12,200 (11,000–13,400)</td></tr>
         <tr><td><b>Max heat @ 5 °F, nameplate</b></td><td><b>≥ 22,400 Btu/h</b></td><td><b>≥ 14,000 Btu/h</b></td></tr>
         <tr><td>Heat load @ −13 °F (95% interval)</td><td>24,400 (21,700–27,400)</td><td>14,900 (13,400–16,400)</td></tr>
@@ -456,21 +467,33 @@ footer{color:var(--text-3);font-size:13px;padding:24px 0 48px}
 
     <h3 class="tblh">Indoor units</h3>
     <div class="tablewrap"><table class="reqtbl">
-      <thead><tr><th>Tag</th><th>ODU</th><th>Room(s) served</th><th>Type</th><th class="num">Size to order</th><th class="num">Heat load @ 5 °F</th><th class="num">Capacity share @ 5 °F*</th><th class="num">Cooling load</th><th>Placement &amp; throw</th></tr></thead>
+      <thead><tr><th>Tag</th><th>ODU</th><th>Room(s) served</th><th>Type</th><th class="num">Size to order</th><th class="num">Heat load @ 5 °F</th><th class="num">Capacity share @ 5 °F*<div class="note">base / with M-5</div></th><th class="num">Cooling load</th><th>Placement &amp; throw</th></tr></thead>
       <tbody>
-        <tr><td class="tag">M-1</td><td>M</td><td>Great room (kitchen, living, dining; vaulted)</td><td>Floor unit</td><td class="num"><b>18k</b></td><td class="num">9,500 (≤ 10,600)</td><td class="num">13,300</td><td class="num">9,000</td><td>Low on the WNW notch wall beside window L; blows ESE along the SSW glass to counter downdraft. Lines come up through the floor.</td></tr>
-        <tr><td class="tag">M-3</td><td>M</td><td>Primary suite (bed, closet, ensuite)</td><td>Ceiling cassette</td><td class="num"><b>12k</b></td><td class="num">6,200 (≤ 7,100)</td><td class="num">8,900</td><td class="num">3,500</td><td>Bedroom ceiling, door side; throws WNW to the window. Body sealed in an R-30 attic box. A 9k would get only ~6,100 at 5 °F.</td></tr>
-        <tr><td class="tag">M-4</td><td>M</td><td>Office (spills to entry, mudroom, powder)</td><td>Ceiling cassette</td><td class="num"><b>9k</b><div class="note">6k if offered</div></td><td class="num">1,420 (+1,530 entry)</td><td class="num">6,600</td><td class="num">1,060</td><td>Office ceiling; throws NNE to the window. Attic box. Smallest room on ODU-M, so it sets the refrigerant-charge limit.</td></tr>
-        <tr><td class="tag">L-1</td><td>L</td><td>Family room (+ Bath 010, laundry, hall, mech)</td><td>Ceiling cassette</td><td class="num"><b>9k</b></td><td class="num">5,000</td><td class="num">6,200</td><td class="num">2,300</td><td>Joist bay at room center; throws SSW to the patio doors.</td></tr>
-        <tr><td class="tag">L-2</td><td>L</td><td>Bedroom 009</td><td>Ceiling cassette</td><td class="num"><b>9k</b><div class="note">6k if offered</div></td><td class="num">2,700</td><td class="num">6,200</td><td class="num">1,000</td><td>Joist bay, door side; throws SSW to door 009C.</td></tr>
-        <tr><td class="tag">L-3</td><td>L</td><td>Bedroom 007</td><td>Ceiling cassette</td><td class="num"><b>9k</b><div class="note">6k if offered</div></td><td class="num">3,000</td><td class="num">6,200</td><td class="num">1,100</td><td>Joist bay, hall side; throws SSW to window B.</td></tr>
-        <tr><td class="tag">L-4</td><td>L</td><td>Bedroom 006 + Bath 005</td><td>Ceiling cassette</td><td class="num"><b>9k</b><div class="note">6k if offered</div></td><td class="num">1,460</td><td class="num">6,200</td><td class="num">630</td><td>Joist bay, door side; throws NNE. Rotate toward window D (WNW) if the joists allow.</td></tr>
+        <tr><td class="tag">M-1</td><td>M</td><td>Great room, glass (WNW) end</td><td>Floor console, low</td><td class="num"><b>12k</b></td><td class="num" rowspan="2">9,500 (≤ 10,600)<div class="note">room total</div></td><td class="num">8,200 / 6,800</td><td class="num" rowspan="2">9,000<div class="note">room total</div></td><td>Low on the WNW notch wall beside window L; blows ESE along the SSW glass. Lines come up through the floor.</td></tr>
+        <tr><td class="tag">M-2</td><td>M</td><td>Great room, kitchen (ESE) end</td><td>Floor console, low</td><td class="num"><b>9k</b></td><td class="num">6,200 / 5,100</td><td>Low on the ESE wall by door 105B; blows WNW along the glass. Check against kitchen elevations. Lines come up through the floor.</td></tr>
+        <tr><td class="tag">M-3</td><td>M</td><td>Primary suite (bed, closet, ensuite)</td><td>Ceiling cassette</td><td class="num"><b>12k</b></td><td class="num">6,200 (≤ 7,100)</td><td class="num">8,200 / 6,800</td><td class="num">3,500</td><td>Bedroom ceiling, door side; throws WNW to the window. Body sealed in an R-30 attic box. Undercut the closet door or add a transfer grille so the closet gets air.</td></tr>
+        <tr><td class="tag">M-4</td><td>M</td><td>Office (+ mudroom, powder)</td><td>Ceiling cassette</td><td class="num"><b>9k</b><div class="note">6k if offered</div></td><td class="num">1,420</td><td class="num">6,200 / 5,100</td><td class="num">1,060</td><td>Office ceiling; throws NNE to the window. Attic box. Smallest room on ODU-M, so it sets the refrigerant-charge limit.</td></tr>
+        <tr><td class="tag">M-5<div class="note">optional</div></td><td>M</td><td>Entry + hall (top of the open stair)</td><td>Ceiling cassette</td><td class="num"><b>9k</b><div class="note">6k if offered</div></td><td class="num">1,530</td><td class="num">— / 5,100</td><td class="num">990</td><td>Entry ceiling beside the riser chase (shortest line run); throws NNE toward the front door. Attic box. Without it, the entry relies on spill air from the office and great room.</td></tr>
+        
+<tr><td class="tag">L-1</td><td>L</td><td>Family room (+ Bath 010, laundry, hall, mech)</td><td>Ceiling cassette</td><td class="num"><b>9k</b></td><td class="num">5,000</td><td class="num">6,200 / 6,200</td><td class="num">2,300</td><td>Joist bay at room center; throws SSW to the patio doors.</td></tr>
+        <tr><td class="tag">L-2</td><td>L</td><td>Bedroom 009</td><td>Ceiling cassette</td><td class="num"><b>9k</b><div class="note">6k if offered</div></td><td class="num">2,700</td><td class="num">6,200 / 6,200</td><td class="num">1,000</td><td>Joist bay, door side; throws SSW to door 009C.</td></tr>
+        <tr><td class="tag">L-3</td><td>L</td><td>Bedroom 007</td><td>Ceiling cassette</td><td class="num"><b>9k</b><div class="note">6k if offered</div></td><td class="num">3,000</td><td class="num">6,200 / 6,200</td><td class="num">1,100</td><td>Joist bay, hall side; throws SSW to window B.</td></tr>
+        <tr><td class="tag">L-4</td><td>L</td><td>Bedroom 006 + Bath 005</td><td>Ceiling cassette</td><td class="num"><b>9k</b><div class="note">6k if offered</div></td><td class="num">1,460</td><td class="num">6,200 / 6,200</td><td class="num">630</td><td>Joist bay, door side; throws NNE. Rotate toward window D (WNW) if the joists allow.</td></tr>
       </tbody>
     </table></div>
     <ul class="plnotes">
-      <li>*Share = the indoor unit's fraction of its outdoor unit's 5 °F capacity after the 4% altitude derate. Shown for the Bestcold 45K/36K selection: ODU-M 28,800 × 18/39, 12/39 and 9/39; ODU-L 24,960 × 9/36.</li>
+      <li>*Share = the indoor unit's fraction of its outdoor unit's 5 °F capacity after the 4% altitude derate (28,800 Btu/h for a 42–45K ODU-M; 24,960 for the 36K ODU-L), split by nominal size. It is a worst case for when every unit calls at once. In practice the inverter sends spare capacity to whichever rooms call: ODU-M has ~28,800 against a 19,500 load.</li>
       <li><b>Cassette fit:</b> lower-level bays are 2×10 at 16 in. o.c. (14½ in. clear, 9¼ in. deep). A slim one-way cassette (≤ 14¼ × 8¾ in. body) fits between joists. The 4-way compact cassettes offered so far (22½ in. square, 10¼ in. tall) need one joist headered off plus ¾ in. furring at each location.</li>
-      <li><b>Alternative great-room layout:</b> two floor units, one at each end of the glass (9 + 12 + 18 + 18 on ODU-M). Air spreads better, but M-3's share drops to ~6,100 against a 6,200 load.</li>
+      <li><b>Why two great-room consoles at 12k + 9k:</b> one unit at each end of the glass counters downdraft along its full length, and keeping them ≤ 12k leaves room on the combination chart for M-5. The great-room load is 9,500 Btu/h (≤ 10,600); the two get 14,400 at 5 °F (base).</li>
+      <li><b>If a vendor has no 9–12k floor console</b> (Bestcold offers only the 18k/24k floor/ceiling unit, 41½ in. wide): use 18 + 18 + 12 + 9, which is on the 45K chart. <b>M-5 then cannot be added</b>, because no five-unit combination allows two 18k units.</li>
+      <li><b>Why the optional unit goes in the entry:</b>
+        <ul>
+          <li><b>Entry:</b> it has the largest load with no unit of its own (1,530 Btu/h at 14 °F), takes the front-door infiltration, and the open stair to the lower level drives stack-effect drafts. It sits beside the riser chase, so its line set is the shortest on ODU-M.</li>
+          <li><b>Closet</b> (1,950 Btu/h, unoccupied): better served by a door undercut or transfer grille from M-3, plus air sealing of its exterior walls.</li>
+          <li><b>Ensuite</b> (890 Btu/h): better served by an electric radiant mat under the tile (comfort where you stand barefoot; no cassette in a humid room).</li>
+          <li><b>Mudroom and powder</b> (480 and 60 Btu/h): too small to justify a unit.</li>
+        </ul></li>
+
       <li>Loads are medians from the project load model (Manual J-style estimate, not a permit Manual J). Intervals reflect envelope-input uncertainty only. Line routes and joist direction are schematic; verify them on site.</li>
     </ul>
   </section>
@@ -495,7 +518,7 @@ footer{color:var(--text-3);font-size:13px;padding:24px 0 48px}
   <div class="controls" role="toolbar" aria-label="HVAC filters">
     <div class="seg" id="hseg" role="group" aria-label="Bidders">
       <button type="button" data-s="all" aria-pressed="true">All bidders</button>
-      <button type="button" data-s="scope" aria-pressed="false">Cassette &amp; floor offers only</button>
+      <button type="button" data-s="scope" aria-pressed="false">Compliant offers only</button>
     </div>
     <label class="chk"><input type="checkbox" id="honlybad"> Only requirements a bid fails</label>
     <span class="count" id="hcount"></span>
@@ -701,9 +724,9 @@ drawSummary(); drawCards();
  "offer":"Main: MYTM45NA23BCH18-O (45K, 5-port) + MYTF18 floor/ceiling + MYTC12 + MYTC09 cassettes. Lower: MYTM37NA23BCH18-O (36K, 4-port) + 4× MYTC09 cassettes.",
  "verdict":"Lead candidate. Only bid with a full cassette + floor package, a combination chart and AHRI certificates. Request for information open.",
  "price":null,"imgs":[{"src":"img/hvac/viga_r454b_spec.webp","cap":"Bestcold R-454B free-match outdoor spec sheet (vendor brochure, p. 5)"}]},
-{"key":"cooper","name":"ZERO","contact":"Cooper Tse","kind":"Overseas supplier (Alibaba)","scope":true,
+{"key":"cooper","name":"ZERO","contact":"Cooper Tse","kind":"Overseas supplier (Alibaba)","scope":false,
  "offer":"Main: Z4SOV-36HDTB-US + 2× ZEV-18 floor/ceiling + ZCV-12 + ZCV-09 cassettes. Lower: Z4SOV-36HDTB-US + 4× ZCV-09 cassettes.",
- "verdict":"In scope but too thin to grade: 2-page brochure with copy errors, no dimensions, no low-temperature capacity, no certificate numbers.",
+ "verdict":"Disqualified (owner decision, 11/03/2026): indoor units too large. Brochure also had copy errors and no dimensions, low-temperature capacity or certificate numbers.","dq":true,
  "price":null,"imgs":[{"src":"img/hvac/cooper_brochure.webp","cap":"ZERO R-454B multi-split brochure, p. 2 (ODU, wall, duct, cassette and floor/ceiling tables)"}]},
 {"key":"tcl","name":"TCL / Universal","contact":"Steven Jin","kind":"Overseas supplier (Alibaba)","scope":false,
  "offer":"H42FMH20XPC (42K) + H36FMH21XPC (36K) outdoor units with 9–24K wall-mounted indoor units.",
@@ -821,7 +844,7 @@ function drawSummary(){
   });
   document.getElementById('hsumtable').innerHTML = `<thead><tr><th>Bidder</th><th>Type</th><th class="num">Quoted</th><th class="num">Meets</th><th class="num">Caveat</th><th class="num">Fails</th><th class="num">Not documented</th><th>Standing</th></tr></thead><tbody>` +
     rows.map(v => { const t = tally(v.key); return `<tr><td><span class="sw" style="background:${HV(v.key)}"></span>${esc(v.name)}<div class="note">${esc(v.contact)}</div></td>
-      <td>${esc(v.kind)}${v.scope ? "" : `<div class="note">No cassette/floor offer</div>`}</td>
+      <td>${esc(v.kind)}${v.dq ? `<div class="note" style="color:var(--critical)">Disqualified</div>` : v.scope ? "" : `<div class="note">No cassette/floor offer yet</div>`}</td>
       <td class="num">${v.price ? fmt(v.price.quoted) : "—"}</td><td class="num">${t.ok}</td><td class="num">${t.warn}</td><td class="num">${t.fail ? "<b>" + t.fail + "</b>" : 0}</td><td class="num">${t.open}</td>
       <td style="min-width:220px">${esc(v.verdict)}</td></tr>`; }).join("") + `</tbody>`;
 }
