@@ -205,6 +205,14 @@ footer{color:var(--text-3);font-size:13px;padding:24px 0 48px}
 .plnotes li{margin:4px 0}
 .sortbtn{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:4px;font:inherit;color:inherit;letter-spacing:inherit;text-transform:inherit}
 .sortbtn:hover{color:var(--text)}
+/* CERTS-CSS-START */
+.cst{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;white-space:nowrap}
+.cst i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.cst.yes i{background:var(--good)} .cst.partial i{background:var(--warning)} .cst.pending i{background:var(--warning);opacity:.5} .cst.none i{background:var(--critical)}
+#certtable td{font-size:13px;min-width:120px}
+#certtable td .note{margin-top:2px}
+/* CERTS-CSS-END */
+
 .sortbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
 th.num .sortbtn{justify-content:flex-end}
 .sarrow{font-size:10px;opacity:.55}
@@ -253,6 +261,13 @@ th[aria-sort="ascending"] .sarrow,th[aria-sort="descending"] .sarrow{opacity:1;c
     </div>
     <div class="tablewrap"><table id="sumtable"></table></div>
   </section>
+<!-- CERTS-SECTION-START -->
+  <section class="panel" aria-labelledby="certh" style="margin-top:24px">
+    <h2 id="certh">Certifications supplied by each bidder</h2>
+    <p class="lede">What each bidder has documented so far. Anything other than “Yes” is still missing for the permit or the order; “Gaps” counts Not supplied as 1, Pending as ¾ and Partial as ½. Required by: <b>NFRC</b> energy rating – IECC R303.1.3 (unrated units get default U 0.65); <b>NAFS</b> structural/water test &amp; label (AAMA/WDMA/CSA 101/I.S.2/A440) – IRC R609; <b>air leakage</b> ≤ 0.3 cfm/ft² – IECC R402.4.3; <b>safety glazing</b> mark on each tempered lite (CPSC 16 CFR 1201 / ANSI Z97.1, e.g. SGCC) – IRC R308; <b>IGU seal</b> (IGCC/IGMA, ASTM E2190) – not code-required, but it backs the glass warranty and argon fill.</p>
+    <div class="tablewrap"><table id="certtable"></table></div>
+  </section>
+<!-- CERTS-SECTION-END -->
 
   <div class="controls" role="toolbar" aria-label="Filters">
     <div class="seg" id="projseg" role="group" aria-label="Project">
@@ -688,6 +703,43 @@ document.getElementById('sumtable').addEventListener('click', e => {
   drawSumTable();
   const nb = document.querySelector(`#sumtable .sortbtn[data-k="${k}"]`); if (nb) nb.focus();
 });
+
+/* CERTS-JS-START */
+const CERTS = [{"vendor": "Andersen", "nfrc": ["Yes", "NFRC U/SHGC printed for every unit (U 0.27–0.30)."], "nafs": ["Not supplied", "Not in quote; ask USI for the NAFS (101/I.S.2/A440) ratings."], "air": ["Not supplied", "Not in quote."], "safety": ["Partial", "Doors listed as tempered; no safety-glass mark shown."], "igu": ["Not supplied", "Not in quote."]}, {"vendor": "TOMA", "nfrc": ["Not supplied", "None."], "nafs": ["Not supplied", ""], "air": ["Not supplied", ""], "safety": ["Not supplied", ""], "igu": ["Not supplied", ""]}, {"vendor": "TOMA-C", "nfrc": ["Not supplied", "‘With certificate’ version has none – only Australian AS 2047, CE and ISO."], "nafs": ["Not supplied", ""], "air": ["Not supplied", ""], "safety": ["Not supplied", ""], "igu": ["Not supplied", ""]}, {"vendor": "DAJI", "nfrc": ["Not supplied", "None."], "nafs": ["Not supplied", ""], "air": ["Not supplied", ""], "safety": ["Not supplied", ""], "igu": ["Not supplied", ""]}, {"vendor": "NF", "nfrc": ["Partial", "Verified: NF68 bifold, 91 casement, ES91 fixed, ES86 sliding window (U 0.41–0.43, fails). None for the 135 sliding door; quote names 86-series casement/fixed, not the certified 91 series."], "nafs": ["Not supplied", ""], "air": ["Partial", "Only the 91 casement listing carries an air-leakage rating (≤ 0.3)."], "safety": ["Not supplied", ""], "igu": ["Not supplied", ""]}, {"vendor": "TopBright", "nfrc": ["Partial", "Verified: casement GTB-M-1, fixed GTB-M-2, bifold GTB-M-4. None for sliding door or sliding window; product numbers not on quote; sample label does not match its listing."], "nafs": ["Not supplied", ""], "air": ["Partial", "Only the fixed-window listing carries air leakage (≤ 0.3)."], "safety": ["Partial", "SGCC held by glass supplier Honghua (5/6/8 mm tempered; no 10 mm); supply link not shown."], "igu": ["Partial", "IGCC #6017 held by Honghua; argon fill not certified (GCIA = No)."]}, {"vendor": "Prima-1", "nfrc": ["Not supplied", "‘Label only’ – states U ≤ 0.3 with no rating."], "nafs": ["Not supplied", ""], "air": ["Not supplied", ""], "safety": ["Not supplied", ""], "igu": ["Not supplied", ""]}, {"vendor": "Prima-2", "nfrc": ["Pending", "NFRC certification promised; no certificate or product numbers supplied yet."], "nafs": ["Not supplied", ""], "air": ["Not supplied", ""], "safety": ["Not supplied", ""], "igu": ["Not supplied", ""]}, {"vendor": "Minetal", "nfrc": ["Not supplied", "None."], "nafs": ["Not supplied", ""], "air": ["Not supplied", ""], "safety": ["Not supplied", ""], "igu": ["Not supplied", ""]}, {"vendor": "Yuegangwan", "nfrc": ["Not supplied", "None."], "nafs": ["Not supplied", ""], "air": ["Not supplied", ""], "safety": ["Not supplied", ""], "igu": ["Not supplied", ""]}, {"vendor": "Dongyu", "nfrc": ["Not supplied", "None."], "nafs": ["Not supplied", ""], "air": ["Not supplied", ""], "safety": ["Not supplied", ""], "igu": ["Not supplied", ""]}, {"vendor": "Vista", "nfrc": ["Yes", "NFRC-rated on quote – but every unit is U 0.33, above the 0.30 limit."], "nafs": ["Partial", "Windsor door rated LC-PG40; Andersen windows not shown."], "air": ["Partial", "Covered by the door's LC-PG40 rating only."], "safety": ["Not supplied", "Not in quote."], "igu": ["Not supplied", "Not in quote."]}, {"vendor": "Luvindow", "nfrc": ["Not supplied", "None."], "nafs": ["Not supplied", ""], "air": ["Not supplied", ""], "safety": ["Not supplied", ""], "igu": ["Not supplied", "TGI Super Spacer named, but no IGCC certificate."]}];
+const CCOLS = [
+  {k:"bidder", label:"Bidder", get:r => (VLABEL[r.vendor] || r.vendor).toLowerCase()},
+  {k:"missing", label:"Gaps (of 5)", num:true, get:r => ["nfrc","nafs","air","safety","igu"].reduce((t, x) => t + ({"Yes":0, "Partial":0.5, "Pending":0.75, "Not supplied":1}[r[x][0]]), 0)},
+  {k:"nfrc", label:"NFRC energy", get:r => r.nfrc[0]},
+  {k:"nafs", label:"NAFS structural/water", get:r => r.nafs[0]},
+  {k:"air", label:"Air leakage", get:r => r.air[0]},
+  {k:"safety", label:"Safety glazing", get:r => r.safety[0]},
+  {k:"igu", label:"IGU seal", get:r => r.igu[0]}
+];
+const CRANK = {"Yes":0, "Partial":1, "Pending":2, "Not supplied":3};
+let csortCol = "missing", csortDir = 1;
+function cstat(c){ const s = c[0], cls = s === "Yes" ? "yes" : s === "Partial" ? "partial" : s === "Pending" ? "pending" : "none";
+  return `<span class="cst ${cls}"><i aria-hidden="true"></i>${esc(s)}</span>${c[1] ? `<div class="note">${esc(c[1])}</div>` : ""}`; }
+function drawCertTable(){
+  let rows = CERTS.slice();
+  const c = CCOLS.find(x => x.k === csortCol);
+  if (c) rows.sort((p, q) => {
+    let a = c.get(p), b = c.get(q);
+    if (!c.num && c.k !== "bidder"){ a = CRANK[a]; b = CRANK[b]; return (a - b) * csortDir; }
+    return (c.num ? a - b : String(a).localeCompare(String(b))) * csortDir;
+  });
+  const head = CCOLS.map(c => { const on = c.k === csortCol, aria = on ? (csortDir > 0 ? "ascending" : "descending") : "none";
+    return `<th class="${c.num ? "num " : ""}sortable" aria-sort="${aria}"><button type="button" class="sortbtn" data-k="${c.k}">${c.label}<span class="sarrow" aria-hidden="true">${on ? (csortDir > 0 ? "▲" : "▼") : "↕"}</span></button></th>`; }).join("");
+  const body = rows.map(r => `<tr><td><span class="sw" style="background:${VVAR(r.vendor)}"></span>${esc(VLABEL[r.vendor] || r.vendor)}${CONTACT[r.vendor] ? `<div class="note">${esc(CONTACT[r.vendor])}</div>` : ""}</td>
+    <td class="num"><b>${CCOLS[1].get(r)}</b></td><td>${cstat(r.nfrc)}</td><td>${cstat(r.nafs)}</td><td>${cstat(r.air)}</td><td>${cstat(r.safety)}</td><td>${cstat(r.igu)}</td></tr>`).join("");
+  document.getElementById('certtable').innerHTML = `<thead><tr>${head}</tr></thead><tbody>${body}</tbody>`;
+}
+document.getElementById('certtable').addEventListener('click', e => {
+  const b = e.target.closest('.sortbtn'); if (!b) return; const k = b.dataset.k;
+  if (csortCol === k){ if (csortDir > 0) csortDir = -1; else { csortCol = null; csortDir = 1; } } else { csortCol = k; csortDir = 1; }
+  drawCertTable(); const nb = document.querySelector(`#certtable .sortbtn[data-k="${k}"]`); if (nb) nb.focus();
+});
+drawCertTable();
+/* CERTS-JS-END */
 
 /* ---------- required-operation schematic ---------- */
 function reqSVG(o){
