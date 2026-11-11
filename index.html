@@ -639,12 +639,55 @@ function drawSummary(){
     g.addEventListener('mousemove', e => showTip(html, e.clientX, e.clientY));
     g.addEventListener('mouseleave', hideTip);
   });
-  const t = document.getElementById('sumtable');
-  t.innerHTML = `<thead><tr><th>Bidder</th><th class="num">Quoted</th><th class="num">Est. landed + tax</th><th class="num">Mismatched lines</th><th class="num">Quality (1–5)</th><th>Price basis</th><th>Lead time</th></tr></thead><tbody>` +
-    rows.map(r => `<tr><td><span class="sw" style="background:${VVAR(r.vendor)}"></span>${esc(VLABEL[r.vendor] || r.vendor)}<div class="note">${esc(r.company)}${CONTACT[r.vendor] ? " · " + esc(CONTACT[r.vendor]) : ""}</div>${NOTICE[r.vendor] ? `<div class="notice" style="margin-top:4px">${esc(NOTICE[r.vendor])}</div>` : ""}</td>
-      <td class="num">${fmt(r.quoted)}</td><td class="num">${r.low===r.high?fmt(r.low):fmt(r.low)+" – "+fmt(r.high)}</td>
-      <td class="num">${r.mism}</td><td class="num">${r.quality?.toFixed(1) ?? "–"}</td><td>${esc(r.basis)}</td><td>${esc(r.lead)}</td></tr>`).join("") + `</tbody>`;
+  drawSumTable(rows);
 }
+
+/* ---------- sortable summary table ---------- */
+/* Lead times are free text with mixed units; sort on approximate production time in calendar weeks
+   (working days x 7/5; TopBright's 45-day shipping excluded so all bidders compare on production). */
+const LEADWK = {TOMA:4.3, "TOMA-C":4.3, DAJI:5.4, NF:4.3, TopBright:6.4, Minetal:7.0, Yuegangwan:6.5, Dongyu:6.0, Luvindow:4.5};
+let sortCol = null, sortDir = 1, lastRows = [];
+const SCOLS = [
+  {k:"bidder", label:"Bidder", get:r => (VLABEL[r.vendor] || r.vendor).toLowerCase()},
+  {k:"quoted", label:"Quoted", num:true, get:r => r.quoted},
+  {k:"landed", label:"Est. landed + tax", num:true, get:r => r.low},
+  {k:"mism", label:"Mismatched lines", num:true, get:r => r.mism},
+  {k:"quality", label:"Quality (1–5)", num:true, get:r => r.quality ?? null},
+  {k:"basis", label:"Price basis", get:r => r.basis ? r.basis.toLowerCase() : null},
+  {k:"lead", label:"Lead time", num:true, get:r => LEADWK[r.vendor] ?? null}
+];
+function drawSumTable(rowsIn){
+  if (rowsIn) lastRows = rowsIn;
+  let rows = lastRows.slice();
+  if (sortCol){
+    const c = SCOLS.find(x => x.k === sortCol);
+    rows.sort((p, q) => {
+      const a = c.get(p), b = c.get(q);
+      if (a == null && b == null) return 0;
+      if (a == null) return 1;            /* missing values always last */
+      if (b == null) return -1;
+      return (c.num ? a - b : String(a).localeCompare(String(b))) * sortDir;
+    });
+  }
+  const head = SCOLS.map(c => {
+    const on = c.k === sortCol, aria = on ? (sortDir > 0 ? "ascending" : "descending") : "none";
+    const arrow = on ? (sortDir > 0 ? "▲" : "▼") : "↕";
+    return `<th class="${c.num ? "num " : ""}sortable" aria-sort="${aria}"><button type="button" class="sortbtn" data-k="${c.k}">${c.label}<span class="sarrow" aria-hidden="true">${arrow}</span></button></th>`;
+  }).join("");
+  const body = rows.map(r => `<tr><td><span class="sw" style="background:${VVAR(r.vendor)}"></span>${esc(VLABEL[r.vendor] || r.vendor)}<div class="note">${esc(r.company)}${CONTACT[r.vendor] ? " · " + esc(CONTACT[r.vendor]) : ""}</div>${NOTICE[r.vendor] ? `<div class="notice" style="margin-top:4px">${esc(NOTICE[r.vendor])}</div>` : ""}</td>
+      <td class="num">${fmt(r.quoted)}</td><td class="num">${r.low===r.high?fmt(r.low):fmt(r.low)+" – "+fmt(r.high)}</td>
+      <td class="num">${r.mism}</td><td class="num">${r.quality?.toFixed(1) ?? "–"}</td><td>${esc(r.basis)}</td>
+      <td style="min-width:130px">${LEADWK[r.vendor] != null ? "~" + LEADWK[r.vendor] + " wk production" : "—"}<div class="note">${esc(r.lead)}</div></td></tr>`).join("");
+  document.getElementById('sumtable').innerHTML = `<thead><tr>${head}</tr></thead><tbody>${body}</tbody>`;
+}
+document.getElementById('sumtable').addEventListener('click', e => {
+  const b = e.target.closest('.sortbtn'); if (!b) return;
+  const k = b.dataset.k;
+  if (sortCol === k){ if (sortDir > 0) sortDir = -1; else { sortCol = null; sortDir = 1; } }   /* asc -> desc -> original order */
+  else { sortCol = k; sortDir = 1; }
+  drawSumTable();
+  const nb = document.querySelector(`#sumtable .sortbtn[data-k="${k}"]`); if (nb) nb.focus();
+});
 
 /* ---------- required-operation schematic ---------- */
 function reqSVG(o){
