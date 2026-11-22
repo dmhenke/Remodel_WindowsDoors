@@ -246,6 +246,9 @@ footer{color:var(--text-3);font-size:13px;padding:24px 0 48px}
 th.num .sortbtn{justify-content:flex-end}
 .sarrow{font-size:10px;opacity:.55}
 th[aria-sort="ascending"] .sarrow,th[aria-sort="descending"] .sarrow{opacity:1;color:var(--text)}
+.supersede{border:1px solid var(--warning);border-radius:8px;padding:10px 14px;margin:6px 0 14px;font-size:14px;color:var(--text-2)}
+.supersede a{color:var(--accent)}
+#view-ducted footer{margin:24px 0 40px;color:var(--text-3);font-size:13px}
 @media (max-width:980px){
   .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
   .tile{border-bottom:1px solid var(--line)}
@@ -271,7 +274,8 @@ th[aria-sort="ascending"] .sarrow,th[aria-sort="descending"] .sarrow{opacity:1;c
 <div class="wrap">
   <nav class="apptabs" aria-label="Bid categories">
     <a href="#windows" data-t="wd">Windows &amp; doors</a>
-    <a href="#hvac" data-t="hvac">HVAC / heat pumps</a>
+    <a href="#hvac" data-t="hvac">Ductless (superseded)</a>
+    <a href="#ducted" data-t="ducted">Ducted heat pump</a>
   </nav>
 <div id="view-wd">
   <header class="top">
@@ -340,6 +344,7 @@ th[aria-sort="ascending"] .sarrow,th[aria-sort="descending"] .sarrow{opacity:1;c
 </div>
 <div id="view-hvac" hidden>
   <header class="top">
+    <div class="supersede" role="note"><b>Superseded 11/22/2026.</b> The owner switched to a ducted heat pump; see the <a href="#ducted">Ducted heat pump</a> tab. This ductless comparison is kept for reference.</div>
     <h1>Heat pump bid comparison</h1>
     <p class="sub">What the Skyline house needs (placement and unit sizes), then every HVAC submission checked requirement by requirement against the ductless heat pump spec: two outdoor units, ceiling cassettes and floor units only, no wall-mounted units.</p>
     <div class="meta" id="hmeta"></div>
@@ -615,6 +620,128 @@ th[aria-sort="ascending"] .sarrow,th[aria-sort="descending"] .sarrow{opacity:1;c
   </section>
 
   <footer id="hfoot"></footer>
+</div>
+<div id="view-ducted" hidden>
+  <header class="top">
+    <h1>Ducted heat pump</h1>
+    <p class="sub">Current direction (owner decision, 11/22/2026): one ducted, variable-speed heat pump with an air handler, replacing the ductless multi-zone design. Domestic hot water may be integrated or separate.</p>
+    <div class="meta">Updated 2026-11-22 · loads from the project load model (Manual J-style estimate) · 95% intervals cover envelope-input uncertainty only</div>
+  </header>
+
+  <section class="panel" aria-labelledby="dreqh">
+    <h2 id="dreqh">What the house needs</h2>
+    <p class="lede">One outdoor unit on the ESE side-yard pad and one multi-position air handler in Mech 002 (lower level), with two zones: main floor and lower level. All ducts stay inside the conditioned envelope, per the loads brief. Any run in the vented attic adds 15–25% to the load.</p>
+    <div class="tablewrap"><table class="reqtbl">
+      <thead><tr><th>Requirement</th><th>Value</th><th>Basis</th></tr></thead>
+      <tbody>
+        <tr><td>Heat load @ 5 °F</td><td>31,300 Btu/h (28,400–34,600)</td><td>Whole house; 14 °F: 27,300; 47 °F: 12,600</td></tr>
+        <tr><td><b>Max heat @ 5 °F, nameplate</b></td><td><b>≥ 32,600 Btu/h</b> (≥ 36,000 to cover the upper interval)</td><td>Load ÷ 0.96 altitude derate (4,900 ft)</td></tr>
+        <tr><td>Heat load @ −5 °F and −13 °F</td><td>35,700 Btu/h (10.5 kW); 39,300 (35,600–43,500) = 11.5 kW</td><td>Bestcold AHU series stops heating at −5 °F (catalog: heating ambient −20 to 27 °C)</td></tr>
+        <tr><td><b>Backup heat</b></td><td><b>Electric heat kit ≈ 10 kW</b> in the air handler, staged, outdoor-temperature locked out above ~10 °F</td><td>Carries the whole house below the compressor cutoff; ~42 A at 240 V on its own circuit</td></tr>
+        <tr><td>Cooling @ 95 °F</td><td>≥ 21,300 Btu/h total (20,000 sensible)</td><td>Inverter oversizing acceptable; justify on the SLC worksheet</td></tr>
+        <tr><td>Minimum capacity @ 47 °F</td><td>≤ 12,600 Btu/h (lower is better)</td><td>Limits mild-weather cycling; not on the Bestcold sheet, so ask</td></tr>
+        <tr><td><b>Airflow</b></td><td><b>≥ 1,395 cfm</b> at ≥ 0.5 in. w.c. external static</td><td>Sum of room design airflows (table below); 20 supply registers</td></tr>
+        <tr><td>Zoning</td><td>2 zones (main / lower) with motorized dampers and a zone panel compatible with the inverter (communicating or RS-485 preferred over 24 V staging)</td><td>Lower-level cooling load is only 5,000 Btu/h; without zoning the upstairs thermostat starves the lower level</td></tr>
+        <tr><td>Refrigerant &amp; safety</td><td>R-454B or R-32 (A2L) with a <b>factory refrigerant leak detector</b> in the air handler; ETL/UL on the outdoor unit, air handler and heat kit</td><td>UL 60335-2-40 requirements for ducted A2L systems</td></tr>
+        <tr><td>Certification</td><td>AHRI certificate for the exact matched pair (ducted); NEEP listing; ENERGY STAR Cold Climate preferred (rebates)</td><td></td></tr>
+        <tr><td>Returns</td><td>Great room: one 20×25 filter-grille return high on the NNE side of the vault; bedrooms: jumper ducts or transfer grilles; lower level returns per the loads brief</td><td>2484_Skyline_HVAC_Loads_and_Equipment_Brief.md</td></tr>
+        <tr><td>Warranty</td><td>≥ 10 yr parts and compressor; named U.S. warranty agent</td><td></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="panel" aria-labelledby="droomh">
+    <h2 id="droomh">Room airflow and supply registers</h2>
+    <p class="lede">From the room load model (heat at 14 °F, cooling at 95 °F). The design airflow is the larger of the heating and cooling needs (90th percentile), rounded to a buildable register.</p>
+    <div class="tablewrap"><table class="reqtbl">
+      <thead><tr><th>Room</th><th>Floor</th><th class="num">ft²</th><th class="num">Heat Btu/h</th><th class="num">Cool Btu/h</th><th class="num">Design cfm</th><th class="num">Registers</th><th>Register size</th><th class="num">Branch</th></tr></thead>
+      <tbody>
+<tr><td>Great room</td><td>Main</td><td class="num">573</td><td class="num">7,877</td><td class="num">9,040</td><td class="num">535</td><td class="num">5</td><td>4x14 or 6x10</td><td class="num">6 in.</td></tr>
+<tr><td>Mudroom</td><td>Main</td><td class="num">46</td><td class="num">476</td><td class="num">230</td><td class="num">25</td><td class="num">1</td><td>4x10</td><td class="num">4 in.</td></tr>
+<tr><td>Powder</td><td>Main</td><td class="num">30</td><td class="num">58</td><td class="num">54</td><td class="num">25</td><td class="num">1</td><td>4x10</td><td class="num">4 in.</td></tr>
+<tr><td>Entry + stair</td><td>Main</td><td class="num">140</td><td class="num">1,527</td><td class="num">987</td><td class="num">65</td><td class="num">1</td><td>4x12</td><td class="num">5 in.</td></tr>
+<tr><td>Office</td><td>Main</td><td class="num">94</td><td class="num">1,240</td><td class="num">1,061</td><td class="num">65</td><td class="num">1</td><td>4x12</td><td class="num">5 in.</td></tr>
+<tr><td>Primary bedroom</td><td>Main</td><td class="num">182</td><td class="num">2,475</td><td class="num">1,933</td><td class="num">120</td><td class="num">1</td><td>4x14 or 6x10</td><td class="num">6 in.</td></tr>
+<tr><td>Closet</td><td>Main</td><td class="num">133</td><td class="num">1,952</td><td class="num">1,134</td><td class="num">80</td><td class="num">1</td><td>4x12</td><td class="num">5 in.</td></tr>
+<tr><td>Ensuite</td><td>Main</td><td class="num">94</td><td class="num">887</td><td class="num">473</td><td class="num">40</td><td class="num">1</td><td>4x10</td><td class="num">4 in.</td></tr>
+<tr><td>Bedroom 009</td><td>Lower</td><td class="num">143</td><td class="num">2,360</td><td class="num">1,022</td><td class="num">95</td><td class="num">1</td><td>4x14 or 6x10</td><td class="num">6 in.</td></tr>
+<tr><td>Family room</td><td>Lower</td><td class="num">280</td><td class="num">3,010</td><td class="num">1,688</td><td class="num">120</td><td class="num">2</td><td>4x10</td><td class="num">5 in.</td></tr>
+<tr><td>Bath 010</td><td>Lower</td><td class="num">62</td><td class="num">216</td><td class="num">54</td><td class="num">25</td><td class="num">1</td><td>4x10</td><td class="num">4 in.</td></tr>
+<tr><td>Laundry</td><td>Lower</td><td class="num">115</td><td class="num">631</td><td class="num">205</td><td class="num">30</td><td class="num">1</td><td>4x10</td><td class="num">4 in.</td></tr>
+<tr><td>Mech + stair</td><td>Lower</td><td class="num">100</td><td class="num">433</td><td class="num">227</td><td class="num">0</td><td class="num">0</td><td>return / transfer path</td><td class="num">4 in.</td></tr>
+<tr><td>Hall 003</td><td>Lower</td><td class="num">100</td><td class="num">176</td><td class="num">87</td><td class="num">0</td><td class="num">0</td><td>return / transfer path</td><td class="num">4 in.</td></tr>
+<tr><td>Bath 005</td><td>Lower</td><td class="num">104</td><td class="num">457</td><td class="num">196</td><td class="num">25</td><td class="num">1</td><td>4x10</td><td class="num">4 in.</td></tr>
+<tr><td>Bedroom 007</td><td>Lower</td><td class="num">175</td><td class="num">2,632</td><td class="num">1,136</td><td class="num">105</td><td class="num">1</td><td>4x14 or 6x10</td><td class="num">6 in.</td></tr>
+<tr><td>Bedroom 006</td><td>Lower</td><td class="num">145</td><td class="num">889</td><td class="num">433</td><td class="num">40</td><td class="num">1</td><td>4x10</td><td class="num">4 in.</td></tr>
+        <tr><td><b>Total</b></td><td></td><td></td><td class="num"><b>27,296</b></td><td class="num"><b>19,960</b></td><td class="num"><b>1,395</b></td><td class="num"><b>20</b></td><td>Main 955 cfm / 12 registers; lower 440 cfm / 8</td><td></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="panel" aria-labelledby="dbch">
+    <h2 id="dbch">Bestcold (Viga Zheng) air-handler options vs the house</h2>
+    <p class="lede">The catalog (received 11/22/2026; the PDF title shows it is TCL-built) has a 17 SEER2 and a 19 SEER2 series that <b>share the same model numbers</b> (MYTA24/36/48/60NA23BCH18). Only the 19 SEER2 sheet gives cold-weather capacity, so it is used here. Capacities are derated ×0.96 for altitude.</p>
+    <div class="tablewrap"><table class="reqtbl">
+      <thead><tr><th>19 SEER2 series</th><th class="num">24K</th><th class="num">36K</th><th class="num">48K ★</th><th class="num">60K</th></tr></thead>
+      <tbody>
+        <tr><td>Rated cooling / heating @ 47 °F</td><td class="num">24,000 / 24,000</td><td class="num">34,000 / 36,000</td><td class="num">47,000 / 47,000</td><td class="num">53,000 / 54,000</td></tr>
+        <tr><td>Heating @ 17 °F</td><td class="num">18,500</td><td class="num">25,000</td><td class="num">35,000</td><td class="num">38,000</td></tr>
+        <tr><td>Max heating @ 5 °F (derated)</td><td class="num">18,000 (17,280)</td><td class="num">26,000 (24,960)</td><td class="num"><b>33,000 (31,680)</b></td><td class="num">35,000 (33,600)</td></tr>
+        <tr><td>vs 5 °F load 31,300</td><td class="num"><span class="hs fail">−14,000</span></td><td class="num"><span class="hs fail">−6,300</span></td><td class="num"><span class="hs ok">covers median</span></td><td class="num"><span class="hs ok">covers</span></td></tr>
+        <tr><td>Balance point (est.)</td><td class="num">~30 °F</td><td class="num">~19 °F</td><td class="num"><b>~4 °F</b></td><td class="num">~0 °F</td></tr>
+        <tr><td>COP @ 5 °F · 5 °F/47 °F ratio</td><td class="num">1.75 · 75%</td><td class="num">1.90 · 76%</td><td class="num">1.80 · 70%</td><td class="num">1.90 · 65%</td></tr>
+        <tr><td>Cooling vs 21,300 load</td><td class="num">1.1×</td><td class="num">1.6×</td><td class="num">2.2×</td><td class="num">2.5×</td></tr>
+        <tr><td>Airflow high (vs 1,395 cfm design)</td><td class="num"><span class="hs fail">850</span></td><td class="num"><span class="hs fail">1,150</span></td><td class="num"><span class="hs ok">1,600</span></td><td class="num"><span class="hs ok">1,700</span></td></tr>
+        <tr><td>External static pressure</td><td class="num">0.8 in. w.c.</td><td class="num">0.8</td><td class="num">0.8</td><td class="num">0.8</td></tr>
+        <tr><td>SEER2 / EER2 / HSPF2 (IV)</td><td class="num">18 / 10 / 9</td><td class="num">19 / 10 / 9</td><td class="num">18 / 9 / 8.5</td><td class="num">17 / 7.5 / 8.2</td></tr>
+        <tr><td>ENERGY STAR (US) · NEEP</td><td class="num">No · Yes</td><td class="num">No · Yes</td><td class="num">No · Yes</td><td class="num">No · No</td></tr>
+        <tr><td>Max fuse (ODU)</td><td class="num">25 A</td><td class="num">35 A</td><td class="num">60 A</td><td class="num">60 A</td></tr>
+        <tr><td>Indoor / outdoor sound</td><td class="num">57 / 67 dB(A)</td><td class="num">58 / 68</td><td class="num">60 / 70</td><td class="num">62 / 70</td></tr>
+        <tr><td>Heating cutoff</td><td class="num" colspan="4">−5 °F (−20 °C) for all sizes; the electric heat kit must carry the house below this</td></tr>
+      </tbody>
+    </table></div>
+    <ul class="plnotes">
+      <li><b>Recommended: the 48K, 19 SEER2.</b> It is the only size that both covers the 5 °F load (balance point ~4 °F, so the heat kit runs only in the coldest hours) and moves the 1,395 cfm the duct design needs. The 36K is closer on cooling but falls 6,300 Btu/h short at 5 °F and cannot reach the design airflow.</li>
+      <li><b>Costs of the 48K:</b> cooling is 2.2× oversized. Ask for its minimum capacity, and rely on the inverter and zoning to limit short cycling (SLC's dry summers make humidity control a minor concern). It needs a 60 A outdoor circuit plus the heat-kit circuit, so check panel capacity and the solar inverter's load calculation.</li>
+      <li><b>Alternative, two single-zone systems</b> (the loads brief's preference): 36K main + 24K lower. Each floor gets its own unit, but the lower 24K is ~5× oversized for its 5,000 Btu/h cooling load, and it means two outdoor units.</li>
+      <li><b>Neither series is ENERGY STAR</b> (US), so utility heat-pump rebates that require it would not apply.</li>
+    </ul>
+    <div class="htiles subs" style="--n:2;margin-top:14px">
+      <div class="tile"><div class="vrow">Bestcold AHU · 19 SEER2 spec</div><button class="imgbtn" type="button" data-img="img/ducted/bestcold_ahu_19seer2_spec.webp" data-cap="Bestcold R-454B AHU series, 19 SEER2 technical specifications (catalog p. 4)" aria-label="Enlarge Bestcold 19 SEER2 spec"><img loading="lazy" src="img/ducted/bestcold_ahu_19seer2_spec.webp" alt="Bestcold 19 SEER2 AHU specification table"></button></div>
+      <div class="tile"><div class="vrow">Bestcold AHU · brochure</div><button class="imgbtn" type="button" data-img="img/ducted/bestcold_ahu_brochure_p1.webp" data-cap="Bestcold R-454B air handler unit introduction (catalog p. 1)" aria-label="Enlarge Bestcold AHU brochure"><img loading="lazy" src="img/ducted/bestcold_ahu_brochure_p1.webp" alt="Bestcold air handler brochure cover"></button></div>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="ddhwh">
+    <h2 id="ddhwh">Domestic hot water: separate or integrated</h2>
+    <div class="tablewrap"><table class="reqtbl">
+      <thead><tr><th>Option</th><th>How it works</th><th>For</th><th>Against</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td><b>A. Separate heat-pump water heater</b> (65–80 gal, 240 V)</td><td>Ducted refrigerant heat pump for the house; a stand-alone HPWH in the mech room</td><td>Simplest; any brand of each; independent failure; removes the last gas load, so the gas service can be capped</td><td>Two outdoor-air/indoor-air machines; the HPWH cools and dries the mech room in winter</td><td><span class="hs ok">Lowest risk</span></td></tr>
+        <tr><td><b>B. Air-to-water heat pump + hydronic air handler + DHW tank</b></td><td>One outdoor monobloc (e.g., AIRYINI YINI-050) makes hot or chilled water. A water-coil air handler feeds the ducts, and an indirect tank makes DHW</td><td>One outdoor unit for heating, cooling and DHW; no refrigerant indoors; can add radiant on the lower level later</td><td>Hydronic air handler and buffer tank needed; glycol for freeze protection; chilled-water cooling and DHW priority reduce capacity at peak; AIRYINI's low-temperature data and ETL are unconfirmed; few local installers</td><td><span class="hs warn">Viable if documented</span></td></tr>
+        <tr><td><b>C. CO₂ heat-pump combi</b></td><td>CO₂ HPWH heats a tank that serves DHW and a hydronic air-handler coil</td><td>Excellent DHW and cold-weather performance</td><td>~15,000 Btu/h output vs a 31,300 load at 5 °F; heating only, no cooling</td><td><span class="hs fail">Too small for whole house</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="panel" aria-labelledby="dbidh">
+    <h2 id="dbidh">Bidders for the ducted system</h2>
+    <div class="tablewrap"><table class="reqtbl">
+      <thead><tr><th>Bidder</th><th>Offer so far</th><th>Status</th><th>Next step</th></tr></thead>
+      <tbody>
+        <tr><td><span class="sw" style="background:var(--h-viga)"></span>Bestcold · Viga Zheng</td><td>R-454B AHU catalog, 17 and 19 SEER2 series, 24–60K</td><td><span class="hs open">No price</span></td><td>Quote requested: 48K 19 SEER2 matched system + 10 kW heat kit (11/22)</td></tr>
+        <tr><td><span class="sw" style="background:var(--h-tcl)"></span>TCL · Steven Jin</td><td>Same OEM as the Bestcold AHU (catalog is TCL-built); ductless quote $5,925 now superseded</td><td><span class="hs open">Not asked</span></td><td>Ask for the TCL-branded 48K 19 SEER2 ducted equivalent and its AHRI certificate</td></tr>
+        <tr><td><span class="sw" style="background:var(--h-lucas)"></span>Lucas Heating &amp; Air</td><td>Ducted gas furnace + A/C; ductwork 17 runs at $280 = $4,760</td><td><span class="hs warn">Wrong equipment</span></td><td>Ask for an all-electric heat pump version, ductwork to the 20-register design, and install-only for owner-supplied equipment</td></tr>
+        <tr><td><span class="sw" style="background:var(--h-dc)"></span>Design Comfort</td><td>Ducted dual-fuel, $34,468, equipment unnamed</td><td><span class="hs warn">Wrong equipment</span></td><td>Ask for an all-electric cold-climate heat pump (no gas furnace) with model numbers and a Manual J/D</td></tr>
+        <tr><td><span class="sw" style="background:var(--text-3)"></span>AIRYINI · Leo Chen</td><td>Air-to-water YINI-050 $1,600 EXW (option B above)</td><td><span class="hs open">Data pending</span></td><td>Low-temperature table, ETL number, hydronic air handler</td></tr>
+      </tbody>
+    </table></div>
+    <ul class="plnotes">
+      <li><b>Carries over from the ductless tab:</b> local-contractor findings, Bestcold's commercial terms (non-refundable T/T deposit, buyer-paid customs inspection), and the plumbing note to delete the gas furnace line. The ductless tab is kept for reference.</li>
+      <li><b>No longer applies:</b> cassette fit in joist bays, the 8.2 ft cassette mounting height, floor-console sizing, and the per-room A2L minimum-area check for indoor units. A ducted air handler instead relies on its factory leak detector and duct mixing.</li>
+    </ul>
+  </section>
+  <footer>Ducted direction adopted 11/22/2026. Sizing uses nameplate catalog values; confirm against the AHRI certificate for the matched pair and a permit Manual J/S/D.</footer>
 </div>
 </div>
 
@@ -1075,15 +1202,21 @@ document.getElementById('view-hvac').addEventListener('click', e => {
 let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (!document.getElementById('view-hvac').hidden) drawSummary(); }, 120); });
 
 /* ---------- tabs ---------- */
-const TITLES = {wd:"Window & Door Bids", hvac:"Heat Pump Bids"};
+const TITLES = {wd:"Window & Door Bids", hvac:"Heat Pump Bids", ducted:"Ducted Heat Pump"};
 function route(){
-  const t = location.hash === "#hvac" ? "hvac" : "wd";
+  const t = location.hash === "#hvac" ? "hvac" : location.hash === "#ducted" ? "ducted" : "wd";
   document.getElementById('view-wd').hidden = t !== "wd";
   document.getElementById('view-hvac').hidden = t !== "hvac";
+  document.getElementById('view-ducted').hidden = t !== "ducted";
   document.querySelectorAll('.apptabs a').forEach(a => a.setAttribute('aria-current', a.dataset.t === t ? "page" : "false"));
   document.title = TITLES[t];
   if (t === "hvac") drawAll(); else window.dispatchEvent(new Event('resize'));
 }
+document.getElementById('view-ducted').addEventListener('click', e => {
+  const b = e.target.closest('.imgbtn'); if (!b) return;
+  document.getElementById('dlgimg').src = b.dataset.img; document.getElementById('dlgimg').alt = b.getAttribute('aria-label').replace(/^Enlarge /,'');
+  document.getElementById('dlgcap').textContent = b.dataset.cap; document.getElementById('dlg').showModal();
+});
 addEventListener('hashchange', route);
 route();
 })();
